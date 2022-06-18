@@ -1,0 +1,3 @@
+var foo = Object();
+foo.name = "User";
+System.inform("Hello, " + foo.name);

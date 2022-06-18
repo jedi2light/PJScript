@@ -1,0 +1,24 @@
+ProgramExpression(
+ body: list = [
+  expression: AssignmentExpression(
+   mutable: bool = True,
+   lhs: literal(identifier) = <foo>,
+   rhs: expression = ObjectCallExpression(
+    name: literal(identifier) = <Object>,
+    args: list = []
+   )
+  ),
+  expression: MemberAssignmentExpression(
+   mutable: bool = True,
+   lhs: literal(identifier) = <foo.name>,
+   rhs: literal(string) = "User"
+  ),
+  expression: MemberCallExpression(
+   name: literal(identifier) = <System.inform>,
+   args: list = [
+    stringliteral: "Hello",
+    expression: MemberAccessExpression(name: literal(identifier) = <foo.name>)
+   ]
+  )
+ ]
+)

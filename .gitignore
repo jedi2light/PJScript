@@ -1,0 +1,7 @@
+# Idea
+/.idea
+# Python host cache
+**.pyc
+# Python build dirs
+/dist
+/pjscript.egg-info/
