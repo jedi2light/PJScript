@@ -26,5 +26,4 @@ class DumpMode:
 
         """Actually dumps out built AST"""
 
-        for each in self.program().body():
-            print(each)
+        print(self._program)  # TODO: implement dump() function
