@@ -1,4 +1,13 @@
+xyz = "This gonna be treated as 'var xyz = ...' form";
+xyz;
+
 var foo = Object();
+var foo = new Object;
+var foo = new Object();
+
 const bar = foo;
-foo.name = "User";
-console.log("Hello, ", foo.name);
+
+bar.name = "User";
+bar.name;
+
+console.log("Hello, ", bar.name, bar.name.toString());

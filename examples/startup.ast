@@ -1,24 +1,91 @@
-ProgramExpression([
-  AssignmentExpression(
-   True,
-   IdentifierLiteral(foo),
-   ObjectCallExpression(IdentifierLiteral(Object))
-  ),
-  AssignmentExpression(
-   False,
-   IdentifierLiteral(bar),
-   IdentifierLiteral(foo)
-  ),
-  MemberAssignmentExpression(
-   True,
-   IdentifierLiteral(foo.name),
-   StringLiteral("User")
-  ),
-  MemberCallExpression(
-   IdentifierLiteral(console.log), [
-    StringLiteral("Hello, "),
-    IdentifierLiteral(foo.name)
-   ]
-  )
- ]
-)
+{
+  "class": "ProgramExpression",
+  "body": [
+    {
+      "class": "ScopedAssignmentExpression",
+      "mutable": true,
+      "lhs": { "class": "IdentifierLiteral", "value": "xyz" },
+      "rhs": {
+        "class": "StringLiteral",
+        "value": "This gonna be treated as 'var xyz = ...' form"
+      }
+    },
+    {
+      "class": "ScopedAccessExpression",
+      "name": { "class": "IdentifierLiteral", "value": "xyz" }
+    },
+    {
+      "class": "ScopedAssignmentExpression",
+      "mutable": true,
+      "lhs": { "class": "IdentifierLiteral", "value": "foo" },
+      "rhs": {
+        "class": "ObjectCallExpression",
+        "instantiation": false,
+        "name": { "class": "IdentifierLiteral", "value": "Object" },
+        "args": []
+      }
+    },
+    {
+      "class": "ScopedAssignmentExpression",
+      "mutable": true,
+      "lhs": { "class": "IdentifierLiteral", "value": "foo" },
+      "rhs": {
+        "class": "ObjectCallExpression",
+        "instantiation": true,
+        "name": { "class": "IdentifierLiteral", "value": "Object" },
+        "args": []
+      }
+    },
+    {
+      "class": "ScopedAssignmentExpression",
+      "mutable": true,
+      "lhs": { "class": "IdentifierLiteral", "value": "foo" },
+      "rhs": {
+        "class": "ObjectCallExpression",
+        "instantiation": true,
+        "name": { "class": "IdentifierLiteral", "value": "Object" },
+        "args": []
+      }
+    },
+    {
+      "class": "ScopedAssignmentExpression",
+      "mutable": false,
+      "lhs": { "class": "IdentifierLiteral", "value": "bar" },
+      "rhs": {
+        "class": "ScopedAccessExpression",
+        "name": { "class": "IdentifierLiteral", "value": "foo" }
+      }
+    },
+    {
+      "class": "MemberAssignmentExpression",
+      "mutable": true,
+      "lhs": { "class": "IdentifierLiteral", "value": "bar.name" },
+      "rhs": { "class": "StringLiteral", "value": "User" }
+    },
+    {
+      "class": "MemberAccessExpression",
+      "name": { "class": "IdentifierLiteral", "value": "bar.name" }
+    },
+    {
+      "class": "MemberCallExpression",
+      "instantiation": false,
+      "name": { "class": "IdentifierLiteral", "value": "console.log" },
+      "args": [
+        { "class": "StringLiteral", "value": "Hello, " },
+        {
+          "class": "MemberAccessExpression",
+          "name": { "class": "IdentifierLiteral", "value": "bar.name" }
+        },
+        {
+          "class": "MemberCallExpression",
+          "instantiation": false,
+          "name": {
+            "class": "IdentifierLiteral",
+            "value": "bar.name.toString"
+          },
+          "args": []
+        }
+      ]
+    }
+  ]
+}
