@@ -39,6 +39,12 @@ class Span:
 
         return ':'.join(map(str, self.tuple()))
 
+    def __sub__(self, char_no: int) -> "Span":
+
+        """Returns new Span with a char_no decremented"""
+
+        return Span(self.line(), self._char_no - char_no)
+
 
 class Token:
 
