@@ -1,6 +1,9 @@
 """PJScript BaseExpression"""
 
-from pjscript.models.base import BaseModel
+# pylint: disable=R0903
+
+from pjscript.models.base \
+    import BaseModel
 
 
 class BaseExpression(BaseModel):

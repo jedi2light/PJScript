@@ -1,7 +1,8 @@
 """PJScript ProgramExpression"""
 
 from typing import List
-from pjscript.models.expression.base import BaseExpression
+from pjscript.models.expression.base \
+    import BaseExpression
 from pjscript.models.base import BaseModel
 
 
@@ -23,6 +24,15 @@ class ProgramExpression(BaseExpression):
 
         return self._body
 
+    def to_dict(self) -> dict:
+
+        """Returns dict representation"""
+
+        return {
+            "class": self.__class__.__name__,
+            "body": [expression.to_dict() for expression in self.body()]
+        }
+
     def __repr__(self) -> str:
 
         """Debugging simplified"""
@@ -31,6 +41,6 @@ class ProgramExpression(BaseExpression):
 
     def __str__(self) -> str:
 
-        """Custom serializer is written in order to simplify debugging"""
+        """Custom ProgramExpression serializer was written with the aim to simplify debugging"""
 
-        return f'ProgramExpression([{", ".join(map(str, self.body()))}])'
+        return f'ProgramExpression([{", ".join(map(str, self.body())) if self.body() else ""}])'
