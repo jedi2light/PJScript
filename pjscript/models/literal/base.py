@@ -21,3 +21,15 @@ class BaseLiteral(BaseModel):
         """Returns BaseLiteral token"""
 
         return self._token
+
+    def __repr__(self) -> str:
+
+        """Debugging simplified"""
+
+        return self.__str__()
+
+    def __str__(self) -> str:
+
+        """Custom serializer made in order to simplify debugging"""
+
+        return f'{self.__class__.__name__}({self.token().value()})'
