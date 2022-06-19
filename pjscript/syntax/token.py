@@ -100,6 +100,32 @@ class Token:
 
         return self._kind == self.Operator
 
+    def is_plus_operator(self) -> bool:
+        """Returns whether token is plus operator"""
+
+        return self.is_operator() and self._value == '+'
+
+    def is_sub_operator(self) -> bool:
+        """Returns whether token is sub operator"""
+
+        return self.is_operator() and self._value == '-'
+
+    def is_mul_operator(self) -> bool:
+        """Returns whether token is mul operator"""
+
+        return self.is_operator() and self._value == '*'
+
+    def is_div_operator(self) -> bool:
+        """Returns whether token is div operator"""
+
+        return self.is_operator() and self._value == '/'
+
+    def is_assignment_operator(self) -> bool:
+
+        """Returns whether token is assignment operator"""
+
+        return self.is_operator() and self._value == '='
+
     def is_semicolon(self) -> bool:
 
         """Returns whether token is semicolon"""
@@ -129,6 +155,26 @@ class Token:
         """Returns whether token is identifier"""
 
         return self._kind == self.Identifier
+
+    def is_boolean_keyword(self) -> bool:
+
+        """Returns whether token is boolean keyword"""
+
+        return self.is_identifier() and self._value in ['true',
+                                                        'false']
+
+    def is_null_keyword(self) -> bool:
+
+        """Returns whether token is null keyword"""
+
+        return self.is_identifier() and self._value == 'null'
+
+    def is_mutable_keyword(self) -> bool:
+
+        """Returns whether token is auto/const keyword"""
+
+        return self.is_identifier() and self._value in ['var',
+                                                        'const']
 
     def __repr__(self) -> str:
 
