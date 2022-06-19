@@ -1,6 +1,6 @@
 """PJScript BooleanLiteral"""
 
-from pjscript.models.literal.base import BaseLiteral
+from .base import BaseLiteral
 
 
 class BooleanLiteral(BaseLiteral):

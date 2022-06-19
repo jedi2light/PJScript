@@ -1,6 +1,6 @@
 """PJScript StringLiteral"""
 
-from pjscript.models.literal.base import BaseLiteral
+from .base import BaseLiteral
 
 
 class StringLiteral(BaseLiteral):

@@ -22,6 +22,15 @@ class BaseLiteral(BaseModel):
 
         return self._token
 
+    def to_dict(self) -> dict:
+
+        """Returns dict representation"""
+
+        return {
+            "class": self.__class__.__name__,
+            "value": self.token().value()
+        }
+
     def __repr__(self) -> str:
 
         """Debugging simplified"""
@@ -30,6 +39,10 @@ class BaseLiteral(BaseModel):
 
     def __str__(self) -> str:
 
-        """Custom serializer made in order to simplify debugging"""
+        """Custom __str__() to simplify debugging"""
 
-        return f'{self.__class__.__name__}({self.token().value()})'
+        value = f'"{self.token().value()}"' \
+            if self.token().is_string() \
+            else self.token().value()
+
+        return f'{self.__class__.__name__}({value})'

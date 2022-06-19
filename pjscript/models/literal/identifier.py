@@ -1,6 +1,6 @@
 """PJScript IdentifierLiteral"""
 
-from pjscript.models.literal.base import BaseLiteral
+from .base import BaseLiteral
 
 
 class IdentifierLiteral(BaseLiteral):
