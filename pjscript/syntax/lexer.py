@@ -68,6 +68,12 @@ class Lexer:
 
         """Returns whether current symbol is newline"""
 
+    def _current_symbol_is_coma(self) -> bool:
+
+        """Returns whether current symbol is coma"""
+
+        return self._current_symbol() == ','
+
     def _current_symbol_is_operator(self) -> bool:
 
         """Returns whether current symbol is operator"""
@@ -112,7 +118,12 @@ class Lexer:
 
         while self._has_next_symbol():
 
-            if self._current_symbol_is_operator():
+            if self._current_symbol_is_coma():
+                self._tokens.append(Token(
+                    Token.Coma, self._current_symbol(), self._span()))
+                self._advance_and_increment_char_no()
+
+            elif self._current_symbol_is_operator():
                 self._tokens.append(Token(
                     Token.Operator, self._current_symbol(), self._span()))
                 self._advance_and_increment_char_no()
