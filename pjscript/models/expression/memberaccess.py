@@ -10,7 +10,7 @@ class MemberAccessExpression(BaseExpression):
 
     _name: IdentifierLiteral
 
-    def __int__(self, name: IdentifierLiteral) -> None:
+    def __init__(self, name: IdentifierLiteral) -> None:
 
         """Instantiate MemberAccessExpression"""
 
