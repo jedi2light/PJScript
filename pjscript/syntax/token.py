@@ -88,6 +88,12 @@ class Token:
 
         return self._span
 
+    def is_coma(self) -> bool:
+
+        """Returns whether token is coma"""
+
+        return self._kind == self.Coma
+
     def is_operator(self) -> bool:
 
         """Returns whether token is operator"""
