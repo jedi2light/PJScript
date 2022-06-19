@@ -1,4 +1,4 @@
 var foo = Object();
-const bar = 42;
+const bar = foo;
 foo.name = "User";
-System.inform("Hello, " + foo.name);
+console.log("Hello, ", foo.name);

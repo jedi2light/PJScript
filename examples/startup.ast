@@ -8,15 +8,20 @@ ProgramExpression(
     args: list = []
    )
   ),
+  expression: AssignmentExpression(
+    mutable: bool = False,
+    lhs: literal(identifier) = <bar>,
+    rhs: literal(identifier) = <foo>
+  ),
   expression: MemberAssignmentExpression(
    mutable: bool = True,
    lhs: literal(identifier) = <foo.name>,
    rhs: literal(string) = "User"
   ),
   expression: MemberCallExpression(
-   name: literal(identifier) = <System.inform>,
+   name: literal(identifier) = <console.log>,
    args: list = [
-    stringliteral: "Hello",
+    stringliteral: "Hello, ",
     expression: MemberAccessExpression(name: literal(identifier) = <foo.name>)
    ]
   )
