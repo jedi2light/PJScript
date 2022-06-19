@@ -38,3 +38,15 @@ class AssignmentExpression(BaseExpression):
         """Returns AssignmentExpression right-hand-side"""
 
         return self._rhs
+
+    def __repr__(self) -> str:
+
+        """Debugging simplified"""
+
+        return self.__str__()
+
+    def __str__(self) -> str:
+
+        """Custom Assignment serializer was written with the aim to simplify debugging"""
+
+        return f'{self.__class__.__name__}({self.mutable()}, {self.lhs()}, {self.rhs()})'

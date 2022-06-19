@@ -22,3 +22,15 @@ class ProgramExpression(BaseExpression):
         """Returns ProgramExpression body"""
 
         return self._body
+
+    def __repr__(self) -> str:
+
+        """Debugging simplified"""
+
+        return self.__str__()
+
+    def __str__(self) -> str:
+
+        """Custom serializer is written in order to simplify debugging"""
+
+        return f'ProgramExpression([{", ".join(map(str, self.body()))}])'

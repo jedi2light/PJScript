@@ -21,3 +21,15 @@ class MemberAccessExpression(BaseExpression):
         """Returns MemberAccessExpression name"""
 
         return self._name
+
+    def __repr__(self) -> str:
+
+        """Debugging simplified"""
+
+        return self.__str__()
+
+    def __str__(self) -> str:
+
+        """Custom serializer made to simplify debugging"""
+
+        return f'{self.__class__.__name__}({self.name()})'

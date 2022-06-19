@@ -31,3 +31,15 @@ class CallExpression(BaseExpression):
         """Returns CallExpression args"""
 
         return self._args
+
+    def __repr__(self) -> str:
+
+        """Debugging simplified"""
+
+        return self.__str__()
+
+    def __str__(self) -> str:
+
+        """Custom '*CallExpression' serializer, was written in order to simplify debugging."""
+
+        return f'{self.__class__.__name__}({self.name()}, {", ".join(map(str, self.args()))})'
