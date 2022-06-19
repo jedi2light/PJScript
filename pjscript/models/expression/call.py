@@ -40,6 +40,6 @@ class CallExpression(BaseExpression):
 
     def __str__(self) -> str:
 
-        """Custom '*CallExpression' serializer, was written in order to simplify debugging."""
+        """Custom '*CallExpression' serializer, it was written in order to simplify debugging"""
 
-        return f'{self.__class__.__name__}({self.name()}, {", ".join(map(str, self.args()))})'
+        return f'{self.__class__.__name__}({self.name()}, [{", ".join(map(str, self.args()))}])'
