@@ -50,14 +50,13 @@ class Token:
 
     """Token represents some part of the language syntax"""
 
-    # Token variants
+    Coma = 'Coma'
     Operator = 'Operator'
     Semicolon = 'Semicolon'
     OpeningBracket = 'OpeningBracket'
     ClosingBracket = 'ClosingBracket'
     String = 'String'
     Identifier = 'Identifier'
-    # TODO: add new variants
 
     _kind: str
     _value: str
