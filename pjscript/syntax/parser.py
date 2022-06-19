@@ -1,15 +1,19 @@
 """PJScript Parser"""
 
+# pylint: disable=line-too-long
+# pylint: disable=wildcard-import
+
 from typing import List
 from pjscript.syntax.token import \
     Token, Span
 from pjscript.models import \
-    BaseModel, CallExpression
+    BaseModel, \
+    CallExpression, AssignmentExpression
 from pjscript.models.literal import *
 from pjscript.models.expression import *
 
 
-class Parser:
+class Parser:  # pylint: disable=too-few-public-methods  # it's okay to have only one: `parsed()`
 
     """Parser makes AST based on passed tokens"""
 
@@ -53,95 +57,136 @@ class Parser:
         return groups
 
     @staticmethod
-    def _arguments(tokens) -> List[List[Token]]:
+    def _args_by(tokens, cond) -> List[List[Token]]:
 
-        """Returns tokens grouped by a coma token"""
+        """Returns tokens grouped by a some token"""
 
-        arguments = []
-
-        # TODO: this algorithm does not work properly yet, we definitely need to fix it up!
+        groups = []
+        group = []
 
         idx = 0
         while idx < len(tokens):
-            if tokens[idx].is_coma() or len(tokens) - idx == 1:
-                arguments.append([tokens[idx]] if len(tokens) - idx == 1 else tokens[:idx])
+            if cond(tokens[idx]):
+                groups.append(group)
+                group = []
                 tokens = tokens[idx + 1:]
                 idx = 0
             else:
+                group.append(tokens[idx])
                 idx += 1
 
-        return arguments
+        # we do not want to lose last argument expression from the ExpressionCall' arguments list
+        if group:
+            groups.append(group)
 
-    def _parse_call_expression(self, tokens: List[Token]) -> CallExpression:
+        return groups
+
+    def _parse_call_expression(self, tokens: List[Token], instantiation: bool) -> CallExpression:
 
         """Returns parsed CallExpression (ObjectCallExpression, MemberCallExpression) instance"""
 
-        name = IdentifierLiteral(tokens[0])
-        args = [self._parse_expression(tokens) for tokens in self._arguments(tokens[2:len(tokens) - 1])]
+        name, start = (IdentifierLiteral(tokens[1]), 2)if instantiation else(IdentifierLiteral(tokens[0]), 1)
+
+        args = [self._parse_expression(tokens) for tokens in self._args_by(tokens[start + 1:len(tokens) - 1],
+                                                                           # separate arguments by coma token
+                                                                           lambda token:    token.is_coma())]
 
         # TODO: in JS, we can also express Member*Expression by 'foo . bar', so we need to improve this logic
 
-        return MemberCallExpression(name, args) if '.' in name.token().value() \
-            else ObjectCallExpression(name, args)
+        payload = instantiation, name, args
 
-    def _parse_member_assignment_expression(self, tokens: List[Token]) -> MemberAssignmentExpression:
-
-        """Returns parsed MemberAssignmentExpression instance"""
-
-        assert len(tokens) >= 3,   f'{tokens[0].span().formatted()}: error: incorrect MemberAssignment arity'
-
-        mutable = True
-        lhs = IdentifierLiteral(tokens[0])
-        rhs = self._parse_expression(tokens[2:])
-
-        return MemberAssignmentExpression(mutable, lhs, rhs)
+        return MemberCallExpression(*payload) if name.token().has_a_dot() else ObjectCallExpression(*payload)
 
     def _parse_assignment_expression(self, tokens: List[Token]) -> AssignmentExpression:
 
         """Returns parsed AssignmentExpression instance"""
 
-        assert len(tokens) >= 4,         f'{tokens[0].span().formatted()}: error: incorrect Assignment arity'
+        mutable, tokens = \
+            (tokens[0].value() == 'var', tokens[1:]) if tokens[0].is_mutability_keyword() else (True, tokens)
 
-        mutable = tokens[0].value() == 'var'
-        lhs = IdentifierLiteral(tokens[1])
-        rhs = self._parse_expression(tokens[3:])
+        assert len(tokens) >= 3, f'{tokens[0].span().formatted()}: incorrect arity for assignment expression'
 
-        return AssignmentExpression(mutable, lhs, rhs)
+        lhs = IdentifierLiteral(tokens[0])
+        rhs = self._parse_expression(tokens[2:])  # <-- skip over assignment operator, if empty -> raises err
 
-    def _parse_expression(self, tokens: List[Token]) -> BaseModel:
+        return MemberAssignmentExpression(mutable, lhs, rhs) \
+            if tokens[0].has_a_dot() \
+            else ScopedAssignmentExpression(mutable, lhs, rhs)   # <--- dispatch between two Assignment types
+
+    def _parse_expression(self, tokens: List[Token]) -> BaseModel:  # pylint: disable=R0911  # it's okay, bro
 
         """Returns either a parsed expression or a parsed literal instance"""
 
-        if not tokens:
-            self._warnings.append(f'{self._last_semicolon_token_span.formatted()}: closing empty expression')
-            return NullLiteral(Token(Token.Identifier, 'null', self._last_semicolon_token_span - 1))  # null;
+        assert tokens, f'{(self._last_semicolon_token_span - 1).formatted()}: can not parse empty expression'
 
-        # TODO: implement matching instead of manual guessing what kind of expression we should parse/return!
+        # TODO: implement matching instead of manual guessing what kind of expression we should parse->return
+
+        # null;
+        # null keyword
 
         if tokens[0].is_null_keyword():
-            return NullLiteral(tokens[0])
+            return NullLiteral(tokens[0])  # <------------------------- parse 'null' keyword as a NullLiteral
 
-        if tokens[0].is_boolean_keyword():
-            return BooleanLiteral(tokens[0])
-
-        if tokens[0].is_mutable_keyword():
-            return self._parse_assignment_expression(tokens)
+        # "string";
+        # string literal
 
         if tokens[0].is_string():
-            return StringLiteral(tokens[0])
+            return StringLiteral(tokens[0])  # <----------------------- parse string token as a StringLiteral
 
-        if tokens[0].is_identifier():
-            if len(tokens) == 1:
-                return IdentifierLiteral(tokens[0])
+        # true;
+        # false;
+        # boolean keyword
 
-            if tokens[1].is_opening_bracket():
-                return self._parse_call_expression(tokens)
+        if tokens[0].is_boolean_keyword():
+            return BooleanLiteral(tokens[0])  # <-------- parse ('true', 'false') keyword as a BooleanLiteral
 
-            if tokens[1].is_assignment_operator():
-                return self._parse_member_assignment_expression(tokens)
+        # Object;
+        # foo.bar;
+        # single identifier
+
+        if len(tokens) == 1 and tokens[0].is_regular_identifier():  # it's needed for a secondary else branch
+
+            if tokens[0].has_a_dot():  # <-- 'has_a_dot()' already checks that it's just a regular identifier
+                return MemberAccessExpression(IdentifierLiteral(tokens[0]))  # <- parse as a MemberAccessExpr
+            return ScopedAccessExpression(IdentifierLiteral(tokens[0]))  # <----- parse as a ScopedAccessExpr
+
+        # new Object;
+        #   ^      ^
+        # new Object();
+        #   ^      ^~~
+
+        if tokens[0].is_new_keyword() and tokens[1].is_regular_identifier():
+            return self._parse_call_expression(tokens,    instantiation=True)  # <-- parse instantiation call
+
+        # Object();
+        #      ^^^
+        # console.log("Hello", "World", "!");
+        #           ^^~~~~~~~~~~~~~~~~~~~~~^
+
+        if tokens[0].is_regular_identifier() \
+                and tokens[1].is_opening_bracket() and tokens[-1].is_closing_bracket():
+            return self._parse_call_expression(tokens,    instantiation=False)  # <------- parse regular call
+
+        # foo = "foo";
+        #   ^ ^ ..... ...
+        # var bar = "bar";
+        #   ^   ^ ^ ..... ...
+        # const xyz = bar;
+        #     ^   ^ ^ ... ...
+
+        if (len(tokens) >= 3  # pylint: disable=too-many-boolean-expressions  # might consider refactor this?
+            and tokens[0].is_regular_identifier()
+            and tokens[1].is_assignment_operator()) \
+                or (len(tokens) >= 4
+                    and tokens[0].is_mutability_keyword()
+                    and tokens[1].is_regular_identifier()
+                    and tokens[2].is_assignment_operator()):
+            return self._parse_assignment_expression(tokens)  # <------------- parse an assignment expression
+
+        raise SyntaxError(f'{tokens[0].span().formatted()}: it does not match any known expression pattern!')
 
     def _parse(self) -> None:
 
-        """Takes list of tokens and produces ProgramExpression (AST) instance"""
+        """Takes list of tokens and produces ProgramExpression (AST) instance based on 'recursive parsing'"""
 
         self._program_ast = ProgramExpression([self._parse_expression(expr) for expr in self._expressions()])
