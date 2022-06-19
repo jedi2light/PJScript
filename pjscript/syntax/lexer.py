@@ -7,7 +7,7 @@ from pjscript.syntax.token import Token, Span
 ALPHABET = re.compile(r'[a-zA-Z]')   # matches all the English letters
 
 
-class Lexer:
+class Lexer:  # pylint: disable=too-few-public-methods  # it's okay :)
 
     """Lexer takes source code string, and returns a list of tokens"""
 
@@ -68,6 +68,8 @@ class Lexer:
 
         """Returns whether current symbol is newline"""
 
+        return self._current_symbol() == '\n'
+
     def _current_symbol_is_coma(self) -> bool:
 
         """Returns whether current symbol is coma"""
@@ -112,7 +114,7 @@ class Lexer:
         return re.match(ALPHABET, self._current_symbol()) is not None \
             or self._current_symbol() in ['.']
 
-    def _lex(self) -> None:
+    def _lex(self) -> None:  # pylint: disable=too-many-branches
 
         """Lex a source code"""
 
@@ -168,4 +170,5 @@ class Lexer:
             else:
                 if self._current_symbol_is_newline():
                     self._advance_and_increment_line_no_then_also_reset_line_no()
-                self._advance_and_increment_char_no()  # skip over the separators
+                else:
+                    self._advance_and_increment_char_no()  # skip over separators
