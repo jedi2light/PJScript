@@ -39,6 +39,16 @@ class AssignmentExpression(BaseExpression):
 
         return self._rhs
 
+    def to_dict(self) -> dict:
+
+        """Returns dict representation"""
+
+        return {
+            "class": self.__class__.__name__,
+            "mutable": self.mutable(),
+            "lhs": self.lhs().to_dict(), "rhs": self.rhs().to_dict()
+        }
+
     def __repr__(self) -> str:
 
         """Debugging simplified"""
@@ -47,6 +57,8 @@ class AssignmentExpression(BaseExpression):
 
     def __str__(self) -> str:
 
-        """Custom Assignment serializer was written with the aim to simplify debugging"""
+        """Custom Assignment serializer was made with the aim to simplify debugging"""
 
-        return f'{self.__class__.__name__}({self.mutable()}, {self.lhs()}, {self.rhs()})'
+        mutable = 'mutable' if self.mutable() else 'non-mutable'  # <-- 'mutable' flag
+
+        return f'{self.__class__.__name__}(<{ mutable }>, {self.lhs()}, {self.rhs()})'
