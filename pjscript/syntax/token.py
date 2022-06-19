@@ -46,7 +46,7 @@ class Span:
         return Span(self.line(), self._char_no - char_no)
 
 
-class Token:
+class Token:      # pylint: disable=too-many-public-methods
 
     """Token represents some part of the language syntax"""
 
@@ -100,8 +100,9 @@ class Token:
 
         return self._kind == self.Operator
 
-    def is_plus_operator(self) -> bool:
-        """Returns whether token is plus operator"""
+    def is_add_operator(self) -> bool:
+
+        """Returns whether token is add operator"""
 
         return self.is_operator() and self._value == '+'
 
@@ -156,12 +157,20 @@ class Token:
 
         return self._kind == self.Identifier
 
-    def is_boolean_keyword(self) -> bool:
+    def is_keyword(self) -> bool:
 
-        """Returns whether token is boolean keyword"""
+        """Returns whether token is keyword"""
 
-        return self.is_identifier() and self._value in ['true',
-                                                        'false']
+        return (self.is_new_keyword()
+                or self.is_null_keyword()
+                or self.is_boolean_keyword()
+                or self.is_mutability_keyword())
+
+    def is_new_keyword(self) -> bool:
+
+        """Returns whether token is new keyword"""
+
+        return self.is_identifier() and self._value == 'new'
 
     def is_null_keyword(self) -> bool:
 
@@ -169,12 +178,32 @@ class Token:
 
         return self.is_identifier() and self._value == 'null'
 
-    def is_mutable_keyword(self) -> bool:
+    def is_boolean_keyword(self) -> bool:
+
+        """Returns whether token is boolean keyword"""
+
+        return self.is_identifier() and self._value in ['true',
+                                                        'false']
+
+    def is_mutability_keyword(self) -> bool:
 
         """Returns whether token is auto/const keyword"""
 
         return self.is_identifier() and self._value in ['var',
                                                         'const']
+
+    def is_regular_identifier(self) -> bool:
+
+        """Returns whether token is regular identifier"""
+
+        return self.is_identifier() \
+            and not self.is_keyword() and not self.is_operator()
+
+    def has_a_dot(self) -> bool:
+
+        """Returns whether token value has dot"""
+
+        return self.is_regular_identifier() and '.' in self._value
 
     def __repr__(self) -> str:
 
