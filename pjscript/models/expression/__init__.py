@@ -1,5 +1,7 @@
 """PJScript Expressions"""
 
+# Binary expression
+from .binary import BinaryExpression
 # Program expression
 from .program import ProgramExpression
 # *Call expressions

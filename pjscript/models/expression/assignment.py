@@ -1,5 +1,7 @@
 """PJScript AssignmentExpression"""
 
+# pylint: disable=duplicate-code  # for Assignment, Binary
+
 from pjscript.models.expression.base import BaseExpression
 from pjscript.models.literal.identifier import IdentifierLiteral
 from pjscript.models.base import BaseModel
