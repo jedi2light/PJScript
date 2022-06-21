@@ -124,20 +124,20 @@ class Parser:  # pylint: disable=too-few-public-methods  # it's okay to have onl
         # null;
         # null keyword
 
-        if tokens[0].is_null_keyword():
+        if len(tokens) == 1 and tokens[0].is_null_keyword():
             return NullLiteral(tokens[0])  # <------------------------- parse 'null' keyword as a NullLiteral
 
         # "string";
         # string literal
 
-        if tokens[0].is_string():
+        if len(tokens) == 1 and tokens[0].is_string():
             return StringLiteral(tokens[0])  # <----------------------- parse string token as a StringLiteral
 
         # true;
         # false;
         # boolean keyword
 
-        if tokens[0].is_boolean_keyword():
+        if len(tokens) == 1 and tokens[0].is_boolean_keyword():
             return BooleanLiteral(tokens[0])  # <-------- parse ('true', 'false') keyword as a BooleanLiteral
 
         # Object;
