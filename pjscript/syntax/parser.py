@@ -3,7 +3,7 @@
 # pylint: disable=line-too-long
 # pylint: disable=wildcard-import
 
-from typing import List
+from typing import List, Tuple
 from pjscript.syntax.token import \
     Token, Span
 from pjscript.models import \
@@ -81,6 +81,44 @@ class Parser:  # pylint: disable=too-few-public-methods  # it's okay to have onl
 
         return groups
 
+    @staticmethod
+    def _find_preferred_operator(tokens: List[Token]) -> Tuple[int, str]:
+
+        """Returns most preferred operator (as string) and its index in tokens list"""
+
+        # TODO: for some reason PyCharm/pylint complains about types, but code **should**, and **does** work!
+
+        mul_found: Tuple[Tuple[int, Token]]
+        mul_found = tuple(filter(lambda p: p[1].is_mul_operator(), enumerate(tokens)))               # stupid
+        if not mul_found:
+            div_found: Tuple[Tuple[int, Token]]
+            div_found = tuple(filter(lambda p: p[1].is_div_operator(), enumerate(tokens)))           # stupid
+            if not div_found:
+                add_found: Tuple[Tuple[int, Token]]
+                add_found = tuple(filter(lambda p: p[1].is_add_operator(), enumerate(tokens)))       # stupid
+                if not add_found:
+                    sub_found: Tuple[Tuple[int, Token]]
+                    sub_found = tuple(filter(lambda p: p[1].is_sub_operator(), enumerate(tokens)))   # stupid
+                    assert sub_found,     f'{tokens[0].span()}: no valid arithmetical operator found, a bug?'
+                    return sub_found[0][0], BinaryExpression.Sub  # <----- return found '-' operator position
+                return add_found[0][0], BinaryExpression.Add  # <--------- return found '+' operator position
+            return div_found[0][0], BinaryExpression.Div  # <------------- return found '/' operator position
+        return mul_found[0][0], BinaryExpression.Mul  # <----------------- return found '*' operator position
+
+    def _parse_binary_expression(self, tokens: List[Token]) -> BinaryExpression:
+
+        """Returns parsed BinaryExpression"""
+
+        # TODO: improve assertion, we should not allow nothing at the start/end, but literals and identifiers
+
+        assert not tokens[0].is_arithmetical_operator() \
+               and not tokens[-1].is_arithmetical_operator(),  f'{tokens[0].span()}: wrong expression syntax'
+
+        index, operator = self._find_preferred_operator(tokens)  # <------------ find most preferred operator
+        lhs = self._parse_expression(tokens[:index])  # <------------------- recursively parse left-hand-side
+        rhs = self._parse_expression(tokens[index + 1:])  # <-------------- recursively parse right-hand-side
+        return BinaryExpression(operator, lhs, rhs)  # <------------- return parsed BinaryExpression instance
+
     def _parse_call_expression(self, tokens: List[Token], instantiation: bool) -> CallExpression:
 
         """Returns parsed CallExpression (ObjectCallExpression, MemberCallExpression) instance"""
@@ -112,6 +150,13 @@ class Parser:  # pylint: disable=too-few-public-methods  # it's okay to have onl
         return MemberAssignmentExpression(mutable, lhs, rhs) \
             if tokens[0].has_a_dot() \
             else ScopedAssignmentExpression(mutable, lhs, rhs)   # <--- dispatch between two Assignment types
+
+    @staticmethod
+    def _contains_arithmetical_operator_token(tokens: List[Token]) -> bool:
+
+        """Returns whether tokens list contains at least one arithmetical operator"""
+
+        return bool(tuple(filter(lambda token: token.is_arithmetical_operator(), tokens)))
 
     def _parse_expression(self, tokens: List[Token]) -> BaseModel:  # pylint: disable=R0911  # it's okay, bro
 
@@ -182,6 +227,12 @@ class Parser:  # pylint: disable=too-few-public-methods  # it's okay to have onl
                     and tokens[1].is_regular_identifier()
                     and tokens[2].is_assignment_operator()):
             return self._parse_assignment_expression(tokens)  # <------------- parse an assignment expression
+
+        # "foo" + "bar"
+        #       ^
+
+        if len(tokens) >= 3 and self._contains_arithmetical_operator_token(tokens):
+            return self._parse_binary_expression(tokens)   # if there is at least *one* arithmetical operator
 
         raise SyntaxError(f'{tokens[0].span().formatted()}: it does not match any known expression pattern!')
 
