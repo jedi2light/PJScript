@@ -5,3 +5,7 @@
 # Python build dirs
 /dist
 /pjscript.egg-info/
+# C++ Runtime build
+/runtime/cxx/build/
+# Qt Creator configuration files
+/runtime/cxx/CMakeLists.txt.user
