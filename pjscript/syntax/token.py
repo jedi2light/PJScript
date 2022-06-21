@@ -121,6 +121,15 @@ class Token:      # pylint: disable=too-many-public-methods
 
         return self.is_operator() and self._value == '/'
 
+    def is_arithmetical_operator(self) -> bool:
+
+        """Returns whether token is arithmetic operator"""
+
+        return (self.is_add_operator()
+                or self.is_sub_operator()
+                or self.is_mul_operator()
+                or self.is_div_operator())
+
     def is_assignment_operator(self) -> bool:
 
         """Returns whether token is assignment operator"""
