@@ -10,4 +10,6 @@ const bar = foo;
 bar.name = "User";
 bar.name;
 
+const result = "1" + "2" * "3" + "4";
+
 console.log("Hello, ", bar.name, bar.name.toString());

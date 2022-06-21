@@ -67,6 +67,27 @@
       "name": { "class": "IdentifierLiteral", "value": "bar.name" }
     },
     {
+      "class": "ScopedAssignmentExpression",
+      "mutable": false,
+      "lhs": { "class": "IdentifierLiteral", "value": "result" },
+      "rhs": {
+        "class": "BinaryExpression",
+        "operator": "Mul",
+        "lhs": {
+          "class": "BinaryExpression",
+          "operator": "Add",
+          "lhs": { "class": "StringLiteral", "value": "1" },
+          "rhs": { "class": "StringLiteral", "value": "2" }
+        },
+        "rhs": {
+          "class": "BinaryExpression",
+          "operator": "Add",
+          "lhs": { "class": "StringLiteral", "value": "3" },
+          "rhs": { "class": "StringLiteral", "value": "4" }
+        }
+      }
+    },
+    {
       "class": "MemberCallExpression",
       "instantiation": false,
       "name": { "class": "IdentifierLiteral", "value": "console.log" },
