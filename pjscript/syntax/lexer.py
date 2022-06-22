@@ -112,7 +112,7 @@ class Lexer:  # pylint: disable=too-few-public-methods  # it's okay :)
         """Returns whether current symbol is character"""
 
         return re.match(ALPHABET, self._current_symbol()) is not None \
-            or self._current_symbol() in ['.']
+            or self._current_symbol() in ['.', '_']
 
     def _lex(self) -> None:  # pylint: disable=too-many-branches
 
