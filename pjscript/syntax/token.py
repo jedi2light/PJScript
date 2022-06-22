@@ -156,6 +156,18 @@ class Token:      # pylint: disable=too-many-public-methods
 
         return self._kind == self.ClosingBracket
 
+    def is_opening_curly_bracket(self) -> bool:
+
+        """Returns whether token is opening curly bracket"""
+
+        return self._kind == self.OpeningCurlyBracket
+
+    def is_closing_curly_bracket(self) -> bool:
+
+        """Returns whether token is closing curly bracket"""
+
+        return self._kind == self.ClosingCurlyBracket
+
     def is_string(self) -> bool:
 
         """Returns whether token is string"""
