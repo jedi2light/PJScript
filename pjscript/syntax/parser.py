@@ -270,6 +270,19 @@ class Parser:  # pylint: disable=too-few-public-methods  # it's okay to have onl
                     and tokens[2].is_assignment_operator()):
             return self._parse_assignment_expression(tokens)  # <------------- parse an assignment expression
 
+        # function() {};
+        #        ^^   ^
+        # function(a, b) {};
+        #        ^^      ^
+        # function() {...};
+        #        ^^      ^
+        # function(a, b) {...};
+        #        ^^          ^
+
+        if tokens[0].is_function_keyword() and len(tokens) >= 5 \
+                and tokens[1].is_opening_bracket() and tokens[-1].is_closing_curly_bracket():
+            return self._parse_function_expression(tokens)  # <-------------------- parse function expression
+
         # "foo" + "bar" * "xyz";
         #       ^       ^
 
