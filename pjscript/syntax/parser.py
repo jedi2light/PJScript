@@ -94,6 +94,27 @@ class Parser:  # pylint: disable=too-few-public-methods  # it's okay to have onl
 
         return groups
 
+    def _parse_function_expression(self, tokens: List[Token]) -> FunctionExpression:
+
+        """Returns parsed FunctionExpression"""
+
+        closing_bracket_index = 0
+        for (idx,
+             token) in enumerate(tokens):
+            if token.is_closing_bracket():
+                closing_bracket_index = idx  # <--- find closing bracket token index or set it to 0 otherwise
+
+        assert closing_bracket_index, f'{tokens[0].span()}: function: unable to find nearest closing bracket'
+
+        # TODO: we need also check whether each group contains only one regular identifier, and *fail* if not
+        params = [IdentifierLiteral(t[0])
+                  for t in self._args_by(tokens[2:closing_bracket_index], lambda t: t.is_coma())]    # params
+
+        body = [self._parse_expression(raw)
+                for raw in self._expressions(tokens[closing_bracket_index + 2:len(tokens) - 1])]   # and body
+
+        return FunctionExpression(params, body)  # <----------------------- return parsed function expression
+
     @staticmethod
     def _find_preferred_operator(tokens: List[Token]) -> Tuple[int, str]:
 
