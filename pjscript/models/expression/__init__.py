@@ -2,8 +2,12 @@
 
 # Binary expression
 from .binary import BinaryExpression
+# Return expression
+from .return_ import ReturnExpression
 # Program expression
 from .program import ProgramExpression
+# Function expression
+from .function import FunctionExpression
 # *Call expressions
 from .objectcall import ObjectCallExpression
 from .membercall import MemberCallExpression
