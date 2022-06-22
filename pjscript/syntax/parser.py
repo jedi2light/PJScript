@@ -86,24 +86,24 @@ class Parser:  # pylint: disable=too-few-public-methods  # it's okay to have onl
 
         """Returns most preferred operator (as string) and its index in tokens list"""
 
-        # TODO: for some reason PyCharm/pylint complains about types, but code **should**, and **does** work!
+        # TODO: for some reason PyCharm complains about '*found' types, but code **should** and **does** work
 
-        mul_found: Tuple[Tuple[int, Token]]
-        mul_found = tuple(filter(lambda p: p[1].is_mul_operator(), enumerate(tokens)))               # stupid
-        if not mul_found:
-            div_found: Tuple[Tuple[int, Token]]
-            div_found = tuple(filter(lambda p: p[1].is_div_operator(), enumerate(tokens)))           # stupid
-            if not div_found:
-                add_found: Tuple[Tuple[int, Token]]
-                add_found = tuple(filter(lambda p: p[1].is_add_operator(), enumerate(tokens)))       # stupid
-                if not add_found:
-                    sub_found: Tuple[Tuple[int, Token]]
-                    sub_found = tuple(filter(lambda p: p[1].is_sub_operator(), enumerate(tokens)))   # stupid
-                    assert sub_found,     f'{tokens[0].span()}: no valid arithmetical operator found, a bug?'
-                    return sub_found[0][0], BinaryExpression.Sub  # <----- return found '-' operator position
-                return add_found[0][0], BinaryExpression.Add  # <--------- return found '+' operator position
-            return div_found[0][0], BinaryExpression.Div  # <------------- return found '/' operator position
-        return mul_found[0][0], BinaryExpression.Mul  # <----------------- return found '*' operator position
+        sub_found: Tuple[Tuple[int, Token]]
+        sub_found = tuple(filter(lambda p: p[1].is_sub_operator(), enumerate(tokens)))               # stupid
+        if not sub_found:
+            add_found: Tuple[Tuple[int, Token]]
+            add_found = tuple(filter(lambda p: p[1].is_add_operator(), enumerate(tokens)))           # stupid
+            if not add_found:
+                div_found: Tuple[Tuple[int, Token]]
+                div_found = tuple(filter(lambda p: p[1].is_div_operator(), enumerate(tokens)))       # stupid
+                if not div_found:
+                    mul_found: Tuple[Tuple[int, Token]]
+                    mul_found = tuple(filter(lambda p: p[1].is_mul_operator(), enumerate(tokens)))   # stupid
+                    assert mul_found,     f'{tokens[0].span()}: no valid arithmetical operator found, a bug?'
+                    return mul_found[0][0], BinaryExpression.Mul  # <----- return found '*' operator position
+                return div_found[0][0], BinaryExpression.Div  # <--------- return found '/' operator position
+            return add_found[0][0], BinaryExpression.Add  # <------------- return found '+' operator position
+        return sub_found[0][0], BinaryExpression.Sub  # <----------------- return found '-' operator position
 
     def _parse_binary_expression(self, tokens: List[Token]) -> BinaryExpression:
 
