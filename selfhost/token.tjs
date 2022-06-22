@@ -1,0 +1,19 @@
+const Token = function(kind, value) {
+    this._kind = kind;
+    this._value = value;
+};
+
+module.exports.Token = Token;
+
+Token.Coma = "Coma";
+Token.Operator = "Operator";
+Token.Semicolon = "Semicolon";
+Token.OpeningBracket = "OpeningBracket";
+Token.ClosingBracket = "ClosingBracket";
+Token.OpeningCurlyBracket = 'OpeningCurlyBracket';
+Token.ClosingCurlyBracket = 'ClosingCurlyBracket';
+Token.String = "String";
+Token.Identifier = "Identifier";
+
+Token.prototype.kind = function () { return this._kind; };
+Token.prototype.value = function () { return this._value; };
