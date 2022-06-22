@@ -29,7 +29,7 @@ class ProgramExpression(BaseExpression):
         """Returns dict representation"""
 
         return {
-            "class": self.__class__.__name__,
+            "class": 'ProgramExpression',
             "body": [expression.to_dict() for expression in self.body()]
         }
 
