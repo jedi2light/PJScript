@@ -1,6 +1,10 @@
 xyz = "This gonna be treated as 'var xyz = ...' form";
 xyz;
 
+const mine = function () {
+    const msg = "Hello," + "World!"; return msg;
+};
+
 var foo = Object();
 var foo = new Object;
 var foo = new Object();

@@ -16,6 +16,35 @@
     },
     {
       "class": "ScopedAssignmentExpression",
+      "mutable": false,
+      "lhs": { "class": "IdentifierLiteral", "value": "mine" },
+      "rhs": {
+        "class": "FunctionExpression",
+        "parameters": [],
+        "body": [
+          {
+            "class": "ScopedAssignmentExpression",
+            "mutable": false,
+            "lhs": { "class": "IdentifierLiteral", "value": "msg" },
+            "rhs": {
+              "class": "BinaryExpression",
+              "operator": "Add",
+              "lhs": { "class": "StringLiteral", "value": "Hello," },
+              "rhs": { "class": "StringLiteral", "value": "World!" }
+            }
+          },
+          {
+            "class": "ReturnExpression",
+            "value": {
+              "class": "ScopedAccessExpression",
+              "name": { "class": "IdentifierLiteral", "value": "msg" }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "class": "ScopedAssignmentExpression",
       "mutable": true,
       "lhs": { "class": "IdentifierLiteral", "value": "foo" },
       "rhs": {
