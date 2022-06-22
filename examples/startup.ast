@@ -90,6 +90,22 @@
     {
       "class": "MemberCallExpression",
       "instantiation": false,
+      "name": { "class": "IdentifierLiteral", "value": "System.inform" },
+      "args": [
+        {
+          "class": "BinaryExpression",
+          "operator": "Add",
+          "lhs": {
+            "class": "MemberAccessExpression",
+            "name": { "class": "IdentifierLiteral", "value": "System.exePath" }
+          },
+          "rhs": { "class": "StringLiteral", "value": "fstat.dll" }
+        }
+      ]
+    },
+    {
+      "class": "MemberCallExpression",
+      "instantiation": false,
       "name": { "class": "IdentifierLiteral", "value": "console.log" },
       "args": [
         { "class": "StringLiteral", "value": "Hello, " },

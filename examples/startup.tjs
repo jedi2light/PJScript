@@ -12,4 +12,6 @@ bar.name;
 
 const result = "1" + "2" * "3" + "4";
 
+System.inform(System.exePath + "fstat.dll");
+
 console.log("Hello, ", bar.name, bar.name.toString());
