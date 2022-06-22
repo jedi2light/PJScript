@@ -101,6 +101,18 @@ class Lexer:  # pylint: disable=too-few-public-methods  # it's okay :)
 
         return self._current_symbol() == ')'
 
+    def _current_symbol_is_opening_curly_bracket(self) -> bool:
+
+        """Returns whether current symbol is opening curly bracket"""
+
+        return self._current_symbol() == '{'
+
+    def _current_symbol_is_closing_curly_bracket(self) -> bool:
+
+        """Returns whether current symbol is closing curly bracket"""
+
+        return self._current_symbol() == '}'
+
     def _current_symbol_is_double_quote(self) -> bool:
 
         """Returns whether current symbol is double quote"""
@@ -143,6 +155,22 @@ class Lexer:  # pylint: disable=too-few-public-methods  # it's okay :)
             elif self._current_symbol_is_closing_bracket():
                 self._tokens.append(Token(
                     Token.ClosingBracket, self._current_symbol(), self._span()))
+                self._advance_and_increment_char_no()
+
+            elif self._current_symbol_is_opening_curly_bracket():
+                self._tokens.append(Token(
+                    Token.OpeningCurlyBracket,
+                    self._current_symbol(),
+                    self._span()
+                ))
+                self._advance_and_increment_char_no()
+
+            elif self._current_symbol_is_closing_curly_bracket():
+                self._tokens.append(Token(
+                    Token.ClosingCurlyBracket,
+                    self._current_symbol(),
+                    self._span()
+                ))
                 self._advance_and_increment_char_no()
 
             elif self._current_symbol_is_double_quote():
