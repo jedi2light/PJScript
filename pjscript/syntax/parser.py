@@ -38,9 +38,15 @@ class Parser:  # pylint: disable=too-few-public-methods  # it's okay to have onl
 
         return self._program_ast
 
-    def _expressions(self) -> List[List[Token]]:
+    def _expressions(
+            self,
+            tokens: List[Token] = None
+    ) -> List[List[Token]]:
 
         """Returns tokens grouped by a semicolon token"""
+
+        if tokens is None:
+            tokens = self._tokens
 
         groups = []
 
