@@ -195,6 +195,14 @@ class Parser:  # pylint: disable=too-few-public-methods  # it's okay to have onl
                 return MemberAccessExpression(IdentifierLiteral(tokens[0]))  # <- parse as a MemberAccessExpr
             return ScopedAccessExpression(IdentifierLiteral(tokens[0]))  # <----- parse as a ScopedAccessExpr
 
+        # return;
+        #      ^
+        # return ...;
+        #      ^
+
+        if tokens[0].is_return_keyword():
+            return ReturnExpression(self._parse_expression(tokens[1:]))  # <----- parse as a ReturnExpression
+
         # new Object;
         #   ^      ^
         # new Object();
