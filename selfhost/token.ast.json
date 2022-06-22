@@ -1,0 +1,148 @@
+{
+  "class": "ProgramExpression",
+  "body": [
+    {
+      "class": "ScopedAssignmentExpression",
+      "mutable": false,
+      "lhs": { "class": "IdentifierLiteral", "value": "Token" },
+      "rhs": {
+        "class": "FunctionExpression",
+        "parameters": [
+          { "class": "IdentifierLiteral", "value": "kind" },
+          { "class": "IdentifierLiteral", "value": "value" }
+        ],
+        "body": [
+          {
+            "class": "MemberAssignmentExpression",
+            "mutable": true,
+            "lhs": { "class": "IdentifierLiteral", "value": "this._kind" },
+            "rhs": {
+              "class": "ScopedAccessExpression",
+              "name": { "class": "IdentifierLiteral", "value": "kind" }
+            }
+          },
+          {
+            "class": "MemberAssignmentExpression",
+            "mutable": true,
+            "lhs": { "class": "IdentifierLiteral", "value": "this._value" },
+            "rhs": {
+              "class": "ScopedAccessExpression",
+              "name": { "class": "IdentifierLiteral", "value": "value" }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "class": "MemberAssignmentExpression",
+      "mutable": true,
+      "lhs": { "class": "IdentifierLiteral", "value": "module.exports.Token" },
+      "rhs": {
+        "class": "ScopedAccessExpression",
+        "name": { "class": "IdentifierLiteral", "value": "Token" }
+      }
+    },
+    {
+      "class": "MemberAssignmentExpression",
+      "mutable": true,
+      "lhs": { "class": "IdentifierLiteral", "value": "Token.Coma" },
+      "rhs": { "class": "StringLiteral", "value": "Coma" }
+    },
+    {
+      "class": "MemberAssignmentExpression",
+      "mutable": true,
+      "lhs": { "class": "IdentifierLiteral", "value": "Token.Operator" },
+      "rhs": { "class": "StringLiteral", "value": "Operator" }
+    },
+    {
+      "class": "MemberAssignmentExpression",
+      "mutable": true,
+      "lhs": { "class": "IdentifierLiteral", "value": "Token.Semicolon" },
+      "rhs": { "class": "StringLiteral", "value": "Semicolon" }
+    },
+    {
+      "class": "MemberAssignmentExpression",
+      "mutable": true,
+      "lhs": { "class": "IdentifierLiteral", "value": "Token.OpeningBracket" },
+      "rhs": { "class": "StringLiteral", "value": "OpeningBracket" }
+    },
+    {
+      "class": "MemberAssignmentExpression",
+      "mutable": true,
+      "lhs": { "class": "IdentifierLiteral", "value": "Token.ClosingBracket" },
+      "rhs": { "class": "StringLiteral", "value": "ClosingBracket" }
+    },
+    {
+      "class": "MemberAssignmentExpression",
+      "mutable": true,
+      "lhs": {
+        "class": "IdentifierLiteral",
+        "value": "Token.OpeningCurlyBracket"
+      },
+      "rhs": {
+        "class": "ScopedAccessExpression",
+        "name": { "class": "IdentifierLiteral", "value": "OpeningCurlyBracket" }
+      }
+    },
+    {
+      "class": "MemberAssignmentExpression",
+      "mutable": true,
+      "lhs": {
+        "class": "IdentifierLiteral",
+        "value": "Token.ClosingCurlyBracket"
+      },
+      "rhs": {
+        "class": "ScopedAccessExpression",
+        "name": { "class": "IdentifierLiteral", "value": "ClosingCurlyBracket" }
+      }
+    },
+    {
+      "class": "MemberAssignmentExpression",
+      "mutable": true,
+      "lhs": { "class": "IdentifierLiteral", "value": "Token.String" },
+      "rhs": { "class": "StringLiteral", "value": "String" }
+    },
+    {
+      "class": "MemberAssignmentExpression",
+      "mutable": true,
+      "lhs": { "class": "IdentifierLiteral", "value": "Token.Identifier" },
+      "rhs": { "class": "StringLiteral", "value": "Identifier" }
+    },
+    {
+      "class": "MemberAssignmentExpression",
+      "mutable": true,
+      "lhs": { "class": "IdentifierLiteral", "value": "Token.prototype.kind" },
+      "rhs": {
+        "class": "FunctionExpression",
+        "parameters": [],
+        "body": [
+          {
+            "class": "ReturnExpression",
+            "value": {
+              "class": "MemberAccessExpression",
+              "name": { "class": "IdentifierLiteral", "value": "this._kind" }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "class": "MemberAssignmentExpression",
+      "mutable": true,
+      "lhs": { "class": "IdentifierLiteral", "value": "Token.prototype.value" },
+      "rhs": {
+        "class": "FunctionExpression",
+        "parameters": [],
+        "body": [
+          {
+            "class": "ReturnExpression",
+            "value": {
+              "class": "MemberAccessExpression",
+              "name": { "class": "IdentifierLiteral", "value": "this._value" }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
