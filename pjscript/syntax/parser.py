@@ -228,8 +228,8 @@ class Parser:  # pylint: disable=too-few-public-methods  # it's okay to have onl
                     and tokens[2].is_assignment_operator()):
             return self._parse_assignment_expression(tokens)  # <------------- parse an assignment expression
 
-        # "foo" + "bar"
-        #       ^
+        # "foo" + "bar" * "xyz";
+        #       ^       ^
 
         if len(tokens) >= 3 and self._contains_arithmetical_operator_token(tokens):
             return self._parse_binary_expression(tokens)   # if there is at least *one* arithmetical operator
