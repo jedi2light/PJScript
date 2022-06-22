@@ -7,6 +7,8 @@ add_library(pjscript SHARED pjscript/console.cpp
                             pjscript/console.hpp
                             pjscript/environment.cpp
                             pjscript/environment.hpp
+                            pjscript/nullvalue.cpp
+                            pjscript/nullvalue.hpp
                             pjscript/objectvalue.cpp
                             pjscript/objectvalue.hpp
                             pjscript/stringvalue.cpp
