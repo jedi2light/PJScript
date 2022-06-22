@@ -55,6 +55,8 @@ class Token:      # pylint: disable=too-many-public-methods
     Semicolon = 'Semicolon'
     OpeningBracket = 'OpeningBracket'
     ClosingBracket = 'ClosingBracket'
+    OpeningCurlyBracket = 'OpeningCurlyBracket'
+    ClosingCurlyBracket = 'ClosingCurlyBracket'
     String = 'String'
     Identifier = 'Identifier'
 
