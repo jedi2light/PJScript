@@ -51,11 +51,18 @@ class Parser:  # pylint: disable=too-few-public-methods  # it's okay to have onl
         groups = []
 
         idx = 0
-        while idx < len(self._tokens):
-            if self._tokens[idx].is_semicolon():
-                self._last_semicolon_token_span = self._tokens[idx].span()
-                groups.append(self._tokens[:idx])
-                self._tokens = self._tokens[idx + 1:]
+        while idx < len(tokens):
+            # TODO: this algorithm is stupid and should be improved!
+            if tokens[idx].is_opening_curly_bracket():
+                while idx < len(tokens):
+                    idx += 1
+                    if tokens[idx].is_closing_curly_bracket():
+                        idx += 1
+                        break
+            if tokens[idx].is_semicolon():
+                self._last_semicolon_token_span = tokens[idx].span()
+                groups.append(tokens[:idx])
+                tokens = tokens[idx + 1:]
                 idx = 0
             else:
                 idx += 1
