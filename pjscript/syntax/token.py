@@ -187,7 +187,9 @@ class Token:      # pylint: disable=too-many-public-methods
         return (self.is_new_keyword()
                 or self.is_null_keyword()
                 or self.is_boolean_keyword()
-                or self.is_mutability_keyword())
+                or self.is_mutability_keyword()
+                or self.is_function_keyword()
+                or self.is_return_keyword())
 
     def is_new_keyword(self) -> bool:
 
