@@ -215,6 +215,18 @@ class Token:      # pylint: disable=too-many-public-methods
         return self.is_identifier() and self._value in ['var',
                                                         'const']
 
+    def is_function_keyword(self) -> bool:
+
+        """Returns whether token is function keyword"""
+
+        return self.is_identifier() and self._value == 'function'
+
+    def is_return_keyword(self) -> bool:
+
+        """Returns whether token is return keyword"""
+
+        return self.is_identifier() and self._value == 'return'
+
     def is_regular_identifier(self) -> bool:
 
         """Returns whether token is regular identifier"""
