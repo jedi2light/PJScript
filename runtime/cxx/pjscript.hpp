@@ -1,3 +1,5 @@
+#pragma once
+
 // Objects
 #include "pjscript/objects/object.hpp"
 #include "pjscript/objects/string.hpp"
