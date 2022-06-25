@@ -19,6 +19,13 @@ I say **compile**, I mean this project can actually take the **TJS** source code
 to **C++**, compile this **C++** source with your system compiler (**clang++** for instance) and link with the tiny
 replica of **KrKrX**' **TJS** runtime
 
+## Try it out!
+
+**First, you need to have GNU BASH, Python 3, CMake, and CLang compiler installed on your system. Then you can run**  
+```shell
+./pyjs.sh examples/startup.tjs
+```
+
 ## What's the license?
 
 **PJScript** project was initially created in late June 2020 by @jedi2light, and licensed under **WTFPL** public license
