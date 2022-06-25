@@ -33,6 +33,20 @@ class ProgramExpression(BaseExpression):
             "body": [expression.to_dict() for expression in self.body()]
         }
 
+    def generate(self, top: bool = False, **opts) -> str:
+
+        """Generate ProgramExpression"""
+
+        name = opts['name']  # it should fail if we did not provide a name
+
+        generated = '\n'.join(map(lambda e_child:  e_child.generate(True),
+                                  self.body()))
+
+        generated += '\nreturn new NullPrimitive();'  # returns null value
+
+        return f'#include "runtime/cxx/pjscript.hpp"\n' \
+               f'Primitive* {name}(Environment* _env) {{\n{generated}\n}}'
+
     def __repr__(self) -> str:
 
         """Debugging simplified"""

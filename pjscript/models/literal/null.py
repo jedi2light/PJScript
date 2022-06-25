@@ -6,3 +6,9 @@ from .base import BaseLiteral
 class NullLiteral(BaseLiteral):
 
     """NullLiteral class"""
+
+    def generate(self, top: bool = False, **opts) -> str:
+
+        """Generate NullLiteral"""
+
+        return f'new NullPrimitive()' + (';' if top else '')

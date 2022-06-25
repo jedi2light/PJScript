@@ -59,6 +59,14 @@ class BinaryExpression(BaseExpression):
             "rhs": self.rhs().to_dict()
         }
 
+    def generate(self, top: bool = False, **opts) -> str:
+
+        """Generate BinaryExpression"""
+
+        # TODO: we need to support this, in our CXX runtime
+
+        return 'new NullPrimitive()' + (';' if top else '')
+
     def __repr__(self) -> str:
 
         """Debugging simplified"""

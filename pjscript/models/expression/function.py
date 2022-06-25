@@ -46,6 +46,14 @@ class FunctionExpression(BaseExpression):
             "body": [expr.to_dict() for expr in self.body()]
         }
 
+    def generate(self, top: bool = False, **opts) -> str:
+
+        """Generate FunctionExpression"""
+
+        # TODO: we need to actually generate FunctionObject
+
+        return 'new NullPrimitive()' + (';' if top else '')
+
     def __repr__(self) -> str:
 
         """Debugging simplified"""
