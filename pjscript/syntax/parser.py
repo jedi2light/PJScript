@@ -167,7 +167,7 @@ class Parser:  # pylint: disable=too-few-public-methods  # it's okay to have onl
 
         payload = instantiation, name, args
 
-        return MemberCallExpression(*payload) if name.token().has_a_dot() else ObjectCallExpression(*payload)
+        return MemberCallExpression(*payload) if name.token().has_a_dot() else ScopedCallExpression(*payload)
 
     def _parse_assignment_expression(self, tokens: List[Token]) -> AssignmentExpression:
 
