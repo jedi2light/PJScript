@@ -9,7 +9,7 @@ from .program import ProgramExpression
 # Function expression
 from .function import FunctionExpression
 # *Call expressions
-from .objectcall import ObjectCallExpression
+from .scopedcall import ScopedCallExpression
 from .membercall import MemberCallExpression
 # *Access expressions
 from .memberaccess import MemberAccessExpression
