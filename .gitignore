@@ -8,6 +8,11 @@
 # C++ Runtime build
 /runtime/cxx/build/
 # Compiler' artifacts
+/program
+/program.cpp
+/simple.js
+/simple.js-to.cpp
+/simple.js-to.hpp
 /examples/program
 /examples/program.cpp
 /examples/startup.tjs-to.cpp
