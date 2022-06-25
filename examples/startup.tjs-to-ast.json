@@ -48,7 +48,7 @@
       "mutable": true,
       "lhs": { "class": "IdentifierLiteral", "value": "foo" },
       "rhs": {
-        "class": "ObjectCallExpression",
+        "class": "ScopedCallExpression",
         "instantiation": false,
         "name": { "class": "IdentifierLiteral", "value": "Object" },
         "args": []
@@ -59,7 +59,7 @@
       "mutable": true,
       "lhs": { "class": "IdentifierLiteral", "value": "foo" },
       "rhs": {
-        "class": "ObjectCallExpression",
+        "class": "ScopedCallExpression",
         "instantiation": true,
         "name": { "class": "IdentifierLiteral", "value": "Object" },
         "args": []
@@ -70,7 +70,7 @@
       "mutable": true,
       "lhs": { "class": "IdentifierLiteral", "value": "foo" },
       "rhs": {
-        "class": "ObjectCallExpression",
+        "class": "ScopedCallExpression",
         "instantiation": true,
         "name": { "class": "IdentifierLiteral", "value": "Object" },
         "args": []
