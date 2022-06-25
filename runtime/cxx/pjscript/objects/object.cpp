@@ -165,7 +165,7 @@ Some* Object::get(char* name, bool check) {
     }
     // todo: we need to implement something like 'source-map' to show exact span
     if (check) {
-        std::cout << "Uncaught ReferenceError: "
+        std::cout << "ReferenceError: "
                   << name << " is not defined" << std::endl; // print and exit()
         exit(1);
     }
