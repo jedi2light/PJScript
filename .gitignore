@@ -10,5 +10,7 @@
 # Compiler' artifacts
 /examples/program
 /examples/program.cpp
+/examples/startup.tjs-to.cpp
+/examples/startup.tjs-to.hpp
 # Qt Creator configuration files
 /runtime/cxx/CMakeLists.txt.user
