@@ -7,15 +7,12 @@
 /pjscript.egg-info/
 # C++ Runtime build
 /runtime/cxx/build/
-# Compiler' artifacts
-/program
-/program.cpp
-/simple.js
-/simple.js-to.cpp
-/simple.js-to.hpp
-/examples/program
-/examples/program.cpp
-/examples/startup.tjs-to.cpp
-/examples/startup.tjs-to.hpp
+# Example artfiacts
+/examples/sample/built/
+/examples/sample/sample.sh
+/examples/sample/generated/
+/examples/simple/built/
+/examples/simple/simple.sh
+/examples/simple/generated/
 # Qt Creator configuration files
 /runtime/cxx/CMakeLists.txt.user
