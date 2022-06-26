@@ -8,14 +8,14 @@ build: pjs.py pjscript setup.cfg
 	python -m build
 
 upload: lint build
-	python -m twine upload --repository pypi --verbose ./dist/pjscript-*.whl
+	python -m twine upload --repository pypi --verbose ./dist/tjscript-*.whl
 
 install: lint build
-	pip install --force-reinstall dist/pjscript-*.whl  # force reinstall pkg
+	pip install --force-reinstall dist/tjscript-*.whl  # force reinstall pkg
 
 runtime: runtime/cxx
 	cd runtime/cxx && mkdir -p build && cd build && cmake .. && make && cd -
 
 build-upload-install: lint build
-	python -m twine upload --repository pypi --verbose ./dist/pjscript-*.whl
-	pip install --force-reinstall dist/pjscript-*.whl  # force reinstall pkg
+	python -m twine upload --repository pypi --verbose ./dist/tjscript-*.whl
+	pip install --force-reinstall dist/tjscript-*.whl  # force reinstall pkg

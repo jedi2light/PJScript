@@ -4,7 +4,7 @@
 **.pyc
 # Python build dirs
 /dist
-/pjscript.egg-info/
+/tjscript.egg-info/
 # C++ Runtime build
 /runtime/cxx/build/
 # Example artfiacts
