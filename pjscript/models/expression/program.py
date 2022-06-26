@@ -38,10 +38,10 @@ class ProgramExpression(BaseExpression):
         """Generate .{h,c}pp contexts"""
 
         include = '#include "runtime/cxx/pjscript.hpp"'
-        signature = f'Primitive* {name}(Environment* _env)'
+        signature = f'void {name}( Environment* _env )'
 
         return f'{include}\n{signature};\n', \
-               f'{include}\n{signature}{{\n{self.generate()};\nreturn new NullPrimitive( );\n}}'
+               f'{include}\n{signature}{{\n{self.generate()}}}'
 
     def generate(self, top: bool = False, **opts) -> str:
 
