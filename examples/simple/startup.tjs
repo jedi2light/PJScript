@@ -1,0 +1,3 @@
+a = Object();
+a.foo = "42";
+console.log(typeof(a), typeof(a.foo), a, a.foo);
