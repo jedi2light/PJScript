@@ -7,6 +7,9 @@
 // todo: we should set 'version' variable to match our runtime' short ref
 
 Environment::Environment() {
+    this->m_type = ENVIRONMENT_OBJ;
+    this->m_name = (char*)"Environment";
+
     this->m_primitive = nullptr;
     this->set(
         (char*)"typeof",
@@ -35,6 +38,7 @@ Environment::Environment() {
                return (new StringPrimitive((char*)"constructor"))->some();
                break;
            }
+           return (new StringPrimitive((char*)"unreachable/bug"))->some();
         },
         true
     );
@@ -48,6 +52,24 @@ Environment::Environment() {
     this->set(
         (char*)"Object#constructor",
         [](ArgumentsType) { return new Object(); },
+        true
+    );
+    this->set(
+        (char*)"String",
+        [](ArgumentsType args) {
+            if (args.empty())
+                return (new StringPrimitive())->some();
+            return args[0]->primitive()->some();
+        },
+        true
+    );
+    this->set(
+        (char*)"String#constructor",
+        [](ArgumentsType args) {
+            if (args.empty())
+                return new String();
+            return new String(args[0]->primitive());
+        },
         true
     );
     this->set((char*)"console", new Console(), true);

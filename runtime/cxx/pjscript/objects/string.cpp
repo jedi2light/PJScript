@@ -9,6 +9,9 @@
 //       waste less memory and avoid 'code-duplication'
 
 String::String() {
+    this->m_type = STRING_OBJ;
+    this->m_name = (char*)"String";
+
     this->m_primitive = new StringPrimitive((char*)"");
     this->set(
         (char*)"toString",
@@ -20,6 +23,9 @@ String::String() {
 }
 
 String::String(Primitive* primitive) {
+    this->m_type = STRING_OBJ;
+    this->m_name = (char*)"String";
+
     this->m_primitive = primitive;
     this->set(
         (char*)"toString",
