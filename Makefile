@@ -1,7 +1,7 @@
 all: build
 
 lint: pjs.py pjscript
-	pylint --exit-zero pjs pjscript  # do not want it to break build process
+	pylint --disable=fixme --exit-zero pjs pjscript  # run pylint with rules
 
 build: pjs.py pjscript setup.cfg
 	rm -rf dist/*  # <---- do not forget to clean the ./dist directory first
