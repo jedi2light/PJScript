@@ -11,7 +11,7 @@ from pjscript.compiler import CXXCompiler
 
 parser = argparse.ArgumentParser('PJScript')
 parser.add_argument('source', nargs='?', default='')
-parser.add_argument('--project', help='Build project, and you can run it')
+parser.add_argument('--buildproj', help='Compile project by a given path')
 parser.add_argument('--cgen-mode', '-c',
                     help='Generate .cpp, .hpp files', action='store_true')
 parser.add_argument('--dump-mode', '-d',
@@ -30,8 +30,8 @@ def name(path: str) -> str:
 if __name__ == '__main__':
 
     args = parser.parse_args()
-    if args.project:
-        CXXCompiler(args.project).compile()   # call C++ PJScript compiler
+    if args.buildproj:
+        CXXCompiler(args.buildproj).compile()   # <- compile given project
         exit(0)  # <-- exit(0) immediately after (successful?) compilation
     if not args.source:
         print('REPL is not implemented yet; see help for further options')
