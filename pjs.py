@@ -11,8 +11,7 @@ from pjscript.compiler import CXXCompiler
 
 parser = argparse.ArgumentParser('PJScript')
 parser.add_argument('source', nargs='?', default='')
-parser.add_argument('--mk-binary', '-b',
-                    help='Generate executable file',  action='store_true')
+parser.add_argument('--project', help='Build project, and you can run it')
 parser.add_argument('--cgen-mode', '-c',
                     help='Generate .cpp, .hpp files', action='store_true')
 parser.add_argument('--dump-mode', '-d',
@@ -20,24 +19,34 @@ parser.add_argument('--dump-mode', '-d',
 parser.add_argument('--json-mode', '-j',
                     help='Serializes an AST to JSON', action='store_true')
 
+
+def name(path: str) -> str:
+
+    """Returns name by path"""
+
+    return os.path.basename(path).split('.')[0]  # <-- only pjs needs this
+
+
 if __name__ == '__main__':
 
     args = parser.parse_args()
+    if args.project:
+        CXXCompiler(args.project).compile()   # call C++ PJScript compiler
+        exit(0)  # <-- exit(0) immediately after (successful?) compilation
     if not args.source:
-        print('REPL is not implemented yet')
-    with open(args.source, 'r', encoding='utf-8') as source_code_reader:
-        if args.mk_binary:
-            # TODO: we should support more than one "modules", I would say
-            CXXCompiler([args.source.split('/')[-1]]).compile(
-                os.path.dirname(os.path.abspath(args.source)))  # <- build
+        print('REPL is not implemented yet; see help for further options')
+    with open(args.source,  'r',  encoding='utf-8') as source_code_reader:
         parsed = Parser(Lexer(source_code_reader.read()).lexed()).parsed()
         if args.cgen_mode:
-            name = os.path.basename(args.source).split('.')[0]  # mod name
-            with open(args.source+'-to.cpp', 'w', encoding='utf-8') as sw:
-                sw.write(parsed.generate(name=name))  # <--- generate .cpp
-            with open(args.source+'-to.hpp', 'w', encoding='utf-8') as sw:
-                sw.write(f'#include "runtime/cxx/pjscript.hpp"\n' +
-                         f'Primitive* {name}(Environment* _env);')  # .hpp
+            name = name(args.source)  # <-- get module name from file path
+            base = os.path.dirname(args.source)  # <--- get base directory
+            mask = os.path.join(
+                base, 'generated', os.path.basename(args.source))   # mask
+            hpp, cpp = parsed.ctxs(name=name)  # <---- generate .hpp, .cpp
+            with open(mask + '-to.hpp', 'w', encoding='utf-8') as hpp_f_w:
+                hpp_f_w.write(hpp)  # <----------- write down .cpp context
+            with open(mask + '-to.cpp', 'w', encoding='utf-8') as cpp_f_w:
+                cpp_f_w.write(cpp)  # <----------- write down .hpp context
         if args.dump_mode:
             print(parsed)  # <-- use built-in string Program serialization
         if args.json_mode:
