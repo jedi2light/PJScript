@@ -1,5 +1,7 @@
 """PJScript ScopedCallExpression"""
 
+# pylint: disable=line-too-long  # :)
+
 from pjscript.models.expression.call \
     import CallExpression
 

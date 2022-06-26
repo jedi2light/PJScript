@@ -5,7 +5,7 @@ from pjscript.syntax.lexer import Lexer
 from pjscript.syntax.parser import Parser
 
 
-class CXXCompiler:
+class CXXCompiler:         # pylint: disable=too-few-public-methods # (it's more than enough)
 
     """This class will compile a project"""
 
@@ -45,7 +45,7 @@ class CXXCompiler:
                'return 0;\n'\
                '}\n'
 
-    def compile(self) -> None:
+    def compile(self) -> None:                              # pylint: disable=too-many-locals
 
         """Compile given project"""
 

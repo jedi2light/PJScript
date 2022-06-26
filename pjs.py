@@ -3,6 +3,7 @@
 """PJScript core script"""
 
 import os
+import sys
 import json
 import argparse
 from pjscript.syntax.lexer import Lexer
@@ -32,7 +33,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if args.buildproj:
         CXXCompiler(args.buildproj).compile()   # <- compile given project
-        exit(0)  # <-- exit(0) immediately after (successful?) compilation
+        sys.exit(0)  # <- exit immediately after (successful?) compilation
     if not args.source:
         print('REPL is not implemented yet; see help for further options')
     with open(args.source,  'r',  encoding='utf-8') as source_code_reader:

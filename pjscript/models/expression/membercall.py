@@ -1,5 +1,7 @@
 """PJScript MemberCallExpression"""
 
+# pylint: disable=line-too-long  # :)
+
 from pjscript.models.expression.call \
     import CallExpression
 
@@ -26,4 +28,3 @@ class MemberCallExpression(CallExpression):
         args = '{' + ','.join(map(lambda argum: '(' + argum.generate() + ')->some()', self.args())) + '}'
 
         return f'{generated}->{cast}()({args})' + (';'if top else '')  # <-- return generated expression
-
