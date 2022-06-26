@@ -58,6 +58,12 @@ class Lexer:  # pylint: disable=too-few-public-methods  # it's okay :)
 
         return self._pointer < len(self._source)
 
+    def _next_symbol(self) -> str:
+
+        """Returns next symbol"""
+
+        return self._source[self._pointer + 1]
+
     def _current_symbol(self) -> str:
 
         """Returns current symbol"""
@@ -132,7 +138,16 @@ class Lexer:  # pylint: disable=too-few-public-methods  # it's okay :)
 
         while self._has_next_symbol():
 
-            if self._current_symbol_is_coma():
+            if (self._current_symbol() == '/'
+                    and self._has_next_symbol()
+                    and self._next_symbol() == '/'):
+                self._advance_and_increment_char_no()
+                while self._has_next_symbol():
+                    if self._current_symbol_is_newline():
+                        break
+                    self._advance_and_increment_char_no()
+
+            elif self._current_symbol_is_coma():
                 self._tokens.append(Token(
                     Token.Coma, self._current_symbol(), self._span()))
                 self._advance_and_increment_char_no()
