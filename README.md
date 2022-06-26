@@ -23,8 +23,15 @@ replica of **KrKrX**' **TJS** runtime
 
 **First, you need to have GNU BASH, Python 3, CMake, and CLang compiler installed on your system. Then you can run**  
 ```shell
-./pyjs.sh examples/startup.tjs
+# This will build PJScript Runtime
+make runtime
+# This will build 'sample' project
+./pjs.py --project examples/sample
+# This will launch compiled binary
+./examples/sample.sh
 ```
+
+Also, you can simply run `./pjs.sh examples/sample`, but this isn't customizable, script will always run all 3 commands.
 
 ## What's the license?
 
