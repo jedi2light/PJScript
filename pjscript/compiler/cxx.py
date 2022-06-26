@@ -1,50 +1,91 @@
 """PJScript C++ code compiler"""
 
 import os
-from typing import List
+from pjscript.syntax.lexer import Lexer
+from pjscript.syntax.parser import Parser
 
 
 class CXXCompiler:
 
-    """This class is responsible for C++ code compilation"""
+    """This class will compile a project"""
 
-    _sources: List[str]
+    _project: str
 
-    def __init__(self, sources: List[str]) -> None:
+    def __init__(self, project: str) -> None:
 
         """Instantiate CXXCompiler"""
 
-        self._sources = sources
+        self._project = self._normalize(project)
 
-    def _generate_program_ctx(self) -> str:
+    @staticmethod
+    def _normalize(path) -> str:
 
-        """This will generate program.cpp context"""
+        """Returns normalized path"""
 
-        includes = '\n'.join(map(lambda src: f'#include "{src}-to.hpp"', self._sources))
+        return path if not path.endswith('/') else path[:-1]
 
-        main = 'int main(int argc, char* argv[])'\
-               '{'\
-               'Environment* environment = new Environment();'\
-               + '\n'.join(map(lambda s: s.split('.')[0]+'(environment);', self._sources)) +\
-               'return 0;'\
-               '}'
+    @staticmethod
+    def _generate_sh_ctx(binary: str) -> str:
 
-        return f'{includes}\n{main}\n'  # <------------- return generated program.cpp context
+        """This will generate <project>.sh context"""
 
-    def compile(self, directory: str) -> None:
+        return f'#/usr/bin/env bash\n'\
+               f'LD_LIBRARY_PATH=runtime/cxx/build {binary}'
 
-        """Compile to target (target should be a path)"""
+    @staticmethod
+    def _generate_main_ctx() -> str:
 
-        with open(os.path.join(directory, 'program.cpp'), 'w', encoding='utf-8') as p_writer:
-            p_writer.write(self._generate_program_ctx())
+        """This will generate <project>.cpp context"""
 
-        sources = ' '.join(map(lambda source: f'{directory}/{source}-to.cpp', self._sources))
+        return '#include "startup.tjs-to.hpp"\n'\
+               'int main(int argc, char* argv[])\n'\
+               '{\n'\
+               'Environment* environment = new Environment();\n'\
+               'startup(environment);\n'\
+               'return 0;\n'\
+               '}\n'
+
+    def compile(self) -> None:
+
+        """Compile given project"""
+
+        # TODO: for now we only compile './startup.tjs`, and do not take into account others!
+
+        startup = os.path.join(self._project, 'startup.tjs')
+        assert os.path.exists(startup), "CXXCompiler: each project should have 'startup.tjs'"
+
+        with open(startup, 'r', encoding='utf-8') as startup_f_rdr:
+            hpp_, cpp_ = Parser(Lexer(startup_f_rdr.read()).lexed()).parsed().ctxs('startup')
+
+        if not os.path.exists(os.path.join(self._project, 'built')):
+            os.mkdir(os.path.join(self._project, 'built'))  # <------------- make 'built' dir
+        if not os.path.exists(os.path.join(self._project, 'generated')):
+            os.mkdir(os.path.join(self._project, 'generated'))  # <----- make 'generated' dir
+
+        st_hpp = os.path.join(self._project, 'generated', 'startup.tjs-to.hpp')   # .hpp file
+        st_cpp = os.path.join(self._project, 'generated', 'startup.tjs-to.cpp')   # .cpp file
+
+        with open(st_hpp, 'w', encoding='utf-8') as st_hpp_w:
+            st_hpp_w.write(hpp_)  # <------ write down generated .hpp context for startup.tjs
+        with open(st_cpp, 'w', encoding='utf-8') as st_cpp_w:
+            st_cpp_w.write(cpp_)  # <------ write down generated .cpp context for startup.tjs
+
+        f_mask = os.path.basename(self._project)  # <------- get the base name of the project
+        script = os.path.join(self._project, f_mask + '.sh')  # <--- get launcher script path
+        binary = os.path.join(self._project, 'built', f_mask + '.bin')  # <-- get binary path
+        main_f = os.path.join(self._project, 'generated', f_mask + '.cpp')  # <-- script path
+
+        with open(script, 'w', encoding='utf-8') as sh_f_w:
+            sh_f_w.write(self._generate_sh_ctx(binary))  # <- write down <project>.sh context
+        with open(main_f, 'w', encoding='utf-8') as main_f_w:
+            main_f_w.write(self._generate_main_ctx())   # <- write down <project>.cpp context
 
         cmd = f'clang++ --std=c++20 ' \
-              f'-I. -I{directory} ' \
-              f'{sources} {directory}/program.cpp ' \
-              f'-Lruntime/cxx/build -lpjscript -o {directory}/program'   # generate a command
+              f'-I. -I{self._project} {st_cpp} {main_f} ' \
+              f'-Lruntime/cxx/build -lpjscript -o {binary}'   # <- generate a clang++ command
 
         print(cmd)  # <-- print cmd so user can copy it and use separately (useful for debug)
-
         os.system(cmd)  # <------------------------------------- invoke cmd using os.system()
+
+        os.system(f'chmod +x {script}')  # <---- change mode of launcher script to executable
+        print('Use this to run compiled project:', f'./{script}')  # <--- print a useful hint
