@@ -11,6 +11,10 @@ add_library(PJScriptShared SHARED pjscript/objects/object.hpp
                                   pjscript/objects/environment.cpp
                                   pjscript/objects/string.hpp
                                   pjscript/objects/string.cpp
+                                  pjscript/objects/function.hpp
+                                  pjscript/objects/function.cpp
+                                  pjscript/objects/constructor.hpp
+                                  pjscript/objects/constructor.cpp
                                   pjscript/primitives/primitive.hpp
                                   pjscript/primitives/primitive.cpp
                                   pjscript/primitives/null.hpp
@@ -28,6 +32,10 @@ add_library(PJScriptStatic STATIC pjscript/objects/object.hpp
                                   pjscript/objects/environment.cpp
                                   pjscript/objects/string.hpp
                                   pjscript/objects/string.cpp
+                                  pjscript/objects/function.hpp
+                                  pjscript/objects/function.cpp
+                                  pjscript/objects/constructor.hpp
+                                  pjscript/objects/constructor.cpp
                                   pjscript/primitives/primitive.hpp
                                   pjscript/primitives/primitive.cpp
                                   pjscript/primitives/null.hpp

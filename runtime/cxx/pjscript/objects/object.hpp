@@ -8,6 +8,8 @@
 
 class Some;
 class Object;
+class Function;
+class Constructor;
 
 enum Type {  OBJECT, PRIMITIVE,
              FUNCTION, CONSTRUCTOR  };
