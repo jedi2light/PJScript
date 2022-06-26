@@ -1,5 +1,28 @@
-// This example mostly to play with built-in API
+// This example mostly invented to play with the built-in API
+
+console.log(Object());
+console.log(new Object());
+console.log(typeof(String));
+console.log(typeof(String()));
+console.log(typeof(new String()));
+console.log(typeof(String));
+console.log(typeof(String("foo")));
+console.log(typeof(new String("foo")));
+console.log(String);
+console.log(String("foo"));
+console.log(new String("foo"));
+var foo___toString = new String("foo");
+console.log(foo___toString.toString());
 
 a = Object();
+a.moo = new Object();
 a.foo = "42";
-console.log(typeof(a), typeof(a.foo), a, a.foo);
+a.bar = null;
+a.xyz = a; // we are smart enough to catch circular reference
+console.log(
+	"a is a type of a object? =>", typeof(a), ";",
+	"a.foo is a type of a string? =>", typeof(a.foo), ";",
+	"properties are displayed correctly? =>", a, ";",
+	"42 is displayed? =>", a.foo.toString(), ";",
+	"Object is a type of a function? =>", typeof(Object), "."
+);
