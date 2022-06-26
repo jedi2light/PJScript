@@ -1,6 +1,6 @@
 """PJScript ProgramExpression"""
 
-from typing import List
+from typing import List, Tuple
 from pjscript.models.expression.base \
     import BaseExpression
 from pjscript.models.base import BaseModel
@@ -33,19 +33,21 @@ class ProgramExpression(BaseExpression):
             "body": [expression.to_dict() for expression in self.body()]
         }
 
+    def ctxs(self, name: str) -> Tuple[str, str]:
+
+        """Generate .{h,c}pp contexts"""
+
+        include = '#include "runtime/cxx/pjscript.hpp"'
+        signature = f'Primitive* {name}(Environment* _env)'
+
+        return f'{include}\n{signature};\n', \
+               f'{include}\n{signature}{{\n{self.generate()};\nreturn new NullPrimitive( );\n}}'
+
     def generate(self, top: bool = False, **opts) -> str:
 
         """Generate ProgramExpression"""
 
-        name = opts['name']  # it should fail if we did not provide a name
-
-        generated = '\n'.join(map(lambda e_child:  e_child.generate(True),
-                                  self.body()))
-
-        generated += '\nreturn new NullPrimitive();'  # returns null value
-
-        return f'#include "runtime/cxx/pjscript.hpp"\n' \
-               f'Primitive* {name}(Environment* _env) {{\n{generated}\n}}'
+        return '\n'.join(map(lambda ex: ex.generate(True), self.body()))
 
     def __repr__(self) -> str:
 
