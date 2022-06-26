@@ -11,4 +11,4 @@ class StringLiteral(BaseLiteral):
 
         """Generate StringLiteral"""
 
-        return f'new StringPrimitive((char*)"{self.token().value()}")' + (';' if top else '')
+        return f'(new StringPrimitive((char*)"{self.token().value()}"))' + (';' if top else '')

@@ -11,4 +11,4 @@ class NullLiteral(BaseLiteral):
 
         """Generate NullLiteral"""
 
-        return 'new NullPrimitive()' + (';' if top else '')
+        return '(new NullPrimitive())' + (';' if top else '')

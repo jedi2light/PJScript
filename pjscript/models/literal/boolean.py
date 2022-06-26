@@ -11,4 +11,4 @@ class BooleanLiteral(BaseLiteral):
 
         """Generate BooleanLiteral"""
 
-        return f'new BooleanPrimitive((char*)"{self.token().value()}")' + (';' if top else '')
+        return f'(new BooleanPrimitive((char*)"{self.token().value()}"))' + (';' if top else '')
