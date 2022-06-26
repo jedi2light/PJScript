@@ -1,3 +1,5 @@
+// This example mostly to play with built-in API
+
 a = Object();
 a.foo = "42";
 console.log(typeof(a), typeof(a.foo), a, a.foo);

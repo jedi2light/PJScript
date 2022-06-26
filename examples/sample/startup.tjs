@@ -1,8 +1,11 @@
+// This is a valid comment, block comments coming soon
+
 xyz = "This gonna be treated as 'var xyz = ...' form";
 xyz;
 
 const mine = function () {
-    const msg = "Hello," + "World!"; return msg;
+    const msg = "Hello," + "World!";
+    return msg;
 };
 
 var foo = Object();
@@ -14,6 +17,6 @@ const bar = foo;
 bar.name = "User";
 bar.name;
 
-const result = "1" + "2" * "3" + "4";
+const result = "1" + "2" * "3" + "4" / "5";
 
 console.log("Hello, ", bar.name, bar.name.toString());
