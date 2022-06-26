@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
 
-# Script which is useful for debugging or for new users :)
+# Script which is useful for debugging (or for the new users) :^)
 
-if [ ! -f $1 ]; then echo "No source is given"; exit 1; fi
+if [ -z $1 ]; then echo "No project path were given!"; exit 1; fi
 
-mkdir -p runtime/cxx/build  # create cmake build directory
+if [ ! -d $1 ]; then echo "Can not locate a project!"; exit 1; fi
 
-cd ./runtime/cxx/build && cmake .. && make && cd ../../../
-
-./pjs.py --cgen-mode $1 && ./pjs.py --mk-binary $1 && \
- LD_LIBRARY_PATH=runtime/cxx/build "$(dirname $1)/program"
+make runtime && ./pjs.py --project $1 && "./$1/$(basename $1).sh"
