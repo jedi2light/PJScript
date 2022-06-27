@@ -16,6 +16,9 @@ console.log(foo_str_instance.toString());
 
 my = String;
 
+console.log.X = "X";
+console.log(console.log.X); // does work?
+
 console.log(my);
 
 console.log(true);
@@ -38,6 +41,7 @@ console.log(typeof(new Boolean(false)));
 false_boolean = new Boolean();
 console.log(false_boolean.toString());
 console.log(typeof(false_boolean.toString));
+console.log(typeof(false_boolean.toString()));
 
 a = Object();
 a.moo = new Object();
