@@ -13,7 +13,7 @@ Environment::Environment() {
     this->m_primitive = nullptr;
     this->set(
         (char*)"typeof",
-        [](ArgumentsType args) {
+        [](ArgumentsType args, bool) {
            Some* some =  args[0];
            switch(some->type()) {
            case OBJECT:
@@ -52,52 +52,42 @@ Environment::Environment() {
     );
     this->set(
         (char*)"Object",
-        [](ArgumentsType) {
+        [](ArgumentsType, bool $instantiation) {
             return (new Object())->some();
         },
         true
     );
     this->set(
-        (char*)"Object#constructor",
-        [](ArgumentsType) { return new Object(); },
-        true
-    );
-    this->set(
         (char*)"String",
-        [](ArgumentsType args) {
-            if (args.empty())
-                return (new StringPrimitive())->some();
-            return args[0]->primitive()->some();
-        },
-        true
-    );
-    this->set(
-        (char*)"String#constructor",
-        [](ArgumentsType args) {
-            if (args.empty())
-                return new String();
-            return new String(args[0]->primitive());
+        [](ArgumentsType args, bool $instantiation) {
+            if ($instantiation) {
+                if (args.empty())
+                    return (new String())->some();
+                return (new String(args[0]->primitive()))->some();
+            } else {
+                if (args.empty())
+                    return (new StringPrimitive())->some();
+                return args[0]->primitive()->some();
+            }
         },
         true
     );
     this->set(
         (char*)"Boolean",
-        [](ArgumentsType args) {
-            if (args.empty())
-                return (new BooleanPrimitive())->some();
-            return args[0]->primitive()->some();
+        [](ArgumentsType args, bool $instantiation) {
+            if ($instantiation) {
+                if (args.empty())
+                    return (new Boolean())->some();
+                return (new Boolean(args[0]->primitive()))->some();
+            } else {
+                if (args.empty())
+                    return (new BooleanPrimitive())->some();
+                return args[0]->primitive()->some();
+            }
         },
         true
     );
-    this->set(
-        (char*)"Boolean#constructor",
-        [](ArgumentsType args) {
-            if (args.empty())
-                return new Boolean();
-            return new Boolean(args[0]->primitive());
-        },
-        true
-    );
+
     this->set((char*)"console", new Console(), true);
     this->set((char*)"version", new StringPrimitive((char*)"v0.1"), true);
 }

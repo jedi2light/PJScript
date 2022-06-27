@@ -18,9 +18,6 @@ Some::Some(NFunction function, bool is_mutable) :
 Some::Some(Primitive* primitive, bool is_mutable) :
   m_primitive(primitive), m_is_mutable(is_mutable), m_type(PRIMITIVE) {}
 
-Some::Some(NConstructor constructor, bool is_mutable) :
-  m_object(new Object(constructor)), m_is_mutable(is_mutable), m_type(OBJECT) {}
-
 VarType Some::type() {
     return this->m_type;
 }
@@ -29,20 +26,14 @@ Object* Some::object() {
     return this->m_object;
 }
 
-NFunction Some::function() {
+Some* Some::operator () (ArgumentsType args, bool $instantiation) {
     if (this->m_object)
-        return this->m_object->function();
+        return this->m_object->operator()(args, $instantiation);
     return nullptr;
 }
 
 Primitive* Some::primitive() {
     return this->m_primitive;
-}
-
-NConstructor Some::constructor() {
-    if (this->m_object)
-        return this->m_object->constructor();
-    return nullptr;
 }
 
 bool Some::is_mutable() {
@@ -86,12 +77,6 @@ void Some::set(char* name, Primitive* primitive, bool is_mutable) {
         this->m_object->set(name, primitive, is_mutable);
 }
 
-void Some::set(char* name, NConstructor constructor, bool is_mutable) {
-    if (this->m_type == OBJECT
-            && available(name, this->m_object))
-        this->m_object->set(name, constructor, is_mutable);
-}
-
 Some* Some::get(char* name, bool check) {
     switch(this->m_type) {
     case OBJECT:
@@ -118,11 +103,11 @@ std::string object_to_string(Object* object) {
         // if 'object' is a type of 'String' wrap its value in 'quotes'
         if (object->type() == STRING_OBJ) {
             msg += "'";
-            msg += object->primitive()->raw();
+            msg += object->raw();  // use raw() instead of view() there
             msg += "'";
         // in all other cases, just append underlying primitive 'raw()'
         } else {
-            msg += object->primitive()->raw();
+            msg += object->raw();  // use raw() instead of view() there
         }
         msg += "]";
         return msg; // return this message; do not iterate over props()
@@ -149,10 +134,10 @@ std::string object_to_string(Object* object) {
         else if (it->second->type() == PRIMITIVE &&
                 it->second->primitive()->type() == STRING) {
             str += std::move("'");
-            str += std::move(it->second->raw());
+            str += std::move(it->second->view());  // view() the object
             str += std::move("'");
         } else {
-            str += std::move(it->second->raw());
+            str += std::move(it->second->view());  // view() the object
         }
         // separate key-values by a coma character, 'cause it's fancier
         if (std::distance(it, props.end()) != 1) {
@@ -171,9 +156,19 @@ std::string object_to_string(Object* object) {
 char* Some::raw() {
     switch (this->m_type) {
     case OBJECT:
-        return strdup(object_to_string(this->m_object).c_str()); break;
+        return this->m_object->raw(); break;
     case PRIMITIVE:
-        return this->m_primitive->raw(); break;  // or just return raw;
+        return this->m_primitive->raw(); break;
+    }
+    return UNREACHABLE;  // that is, we remove clang++ compiler warning
+}
+
+char* Some::view() {
+    switch(this->m_type) {
+    case OBJECT:
+        return this->m_object->view(); break;
+    case PRIMITIVE:
+        return this->m_primitive->raw(); break;  // use primitive raw()
     }
     return UNREACHABLE;  // that is, we remove clang++ compiler warning
 }
@@ -188,8 +183,6 @@ Object::Object(NFunction function) : m_function(function){}
 
 Object::Object(Primitive* primitive) : m_primitive(primitive){}
 
-Object::Object(NConstructor constructor) : m_constructor(constructor){}
-
 char* Object::name() {
     return this->m_name;
 }
@@ -202,16 +195,12 @@ ObjType Object::type() {
     return this->m_type;
 }
 
-NFunction Object::function() {
-    return this->m_function;
+Some* Object::operator () (ArgumentsType args, bool is_instantiation) {
+    return this->m_function(args, is_instantiation);
 }
 
 Primitive* Object::primitive() {
     return this->m_primitive;
-}
-
-NConstructor Object::constructor() {
-    return this->m_constructor;
 }
 
 void Object::setType(ObjType type) {
@@ -248,15 +237,6 @@ void Object::set(char* name, Primitive* primitive, bool is_mutable) {
     }
 }
 
-void Object::set(char* name, NConstructor constructor, bool is_mutable) {
-    if (constructor) {
-        Object* cs_object = new Object(constructor);
-        cs_object->setType(CALLABLE_OBJ);
-        cs_object->setAlias(name);
-        this->m_props.insert({name, new Some(cs_object, is_mutable)});
-    }
-}
-
 void Object::set(char* name, Some* some, bool is_mutable) {
     switch (some->type()) {
     case OBJECT:
@@ -288,6 +268,10 @@ char* Object::raw() {
     if (this->m_primitive)
         return this->m_primitive->raw();
     return nullptr;  // if object wasn't based on a primitive type, return NULL;
+}
+
+char* Object::view() {
+    return strdup(object_to_string(this).c_str()); // view an object as a string
 }
 
 Some* Object::some() {

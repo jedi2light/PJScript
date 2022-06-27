@@ -14,11 +14,11 @@ String::String() {
     this->m_primitive = new StringPrimitive((char*)"");
 
     this->set(
-        (char*)"toString",
-        [this](ArgumentsType args) {
-            return this->m_primitive->some();
-        },
-        true
+     (char*)"toString",
+     [this](ArgumentsType args, bool) {
+     return (new StringPrimitive(this->raw()))->some();
+     },
+     true
     );
 }
 
@@ -28,11 +28,11 @@ String::String(Primitive* primitive) {
     this->m_primitive = primitive;
 
     this->set(
-        (char*)"toString",
-        [this](ArgumentsType args) {
-            return this->m_primitive->some();
-        },
-        true
+     (char*)"toString",
+     [this](ArgumentsType args, bool) {
+     return (new StringPrimitive(this->raw()))->some();
+     },
+     true
     );
 }
 

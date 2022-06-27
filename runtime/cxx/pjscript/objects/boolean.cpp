@@ -2,6 +2,7 @@
 
 #include "boolean.hpp"
 
+#include "../primitives/string.hpp"
 #include "../primitives/boolean.hpp"
 
 // todo:       implement something like StringPrototype class
@@ -15,8 +16,8 @@ Boolean::Boolean() {
 
     this->set(
         (char*)"toString",
-        [this](ArgumentsType args) {
-            return this->m_primitive->some();
+        [this](ArgumentsType args, bool) {
+            return (new StringPrimitive(this->raw()))->some();
         },
         true
     );
@@ -29,8 +30,8 @@ Boolean::Boolean(Primitive* primitive) {
 
     this->set(
         (char*)"toString",
-        [this](ArgumentsType args) {
-            return this->m_primitive->some();
+        [this](ArgumentsType args, bool) {
+           return (new StringPrimitive(this->raw()))->some();
         },
         true
     );

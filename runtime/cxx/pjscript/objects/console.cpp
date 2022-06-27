@@ -11,9 +11,9 @@ Console::Console() {
 
     this->set(
         (char*)"log",
-        [](ArgumentsType args) {
+        [](ArgumentsType args, bool) {
             for (Some* arg : args)
-                std::cout << arg->raw() << " ";
+                std::cout << arg->view() << " ";
             std::cout << std::endl;
             return (new NullPrimitive())->some();
         },
@@ -21,9 +21,9 @@ Console::Console() {
     );
     this->set(
         (char*)"error",
-        [](ArgumentsType args) {
+        [](ArgumentsType args, bool) {
             for (Some* arg : args) {
-                std::cerr << arg->raw() << " ";
+                std::cerr << arg->view() << " ";
             std::cerr << std::endl;
             }
             return (new NullPrimitive())->some();
