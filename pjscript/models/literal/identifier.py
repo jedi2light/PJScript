@@ -11,6 +11,4 @@ class IdentifierLiteral(BaseLiteral):
 
         """Generate "IdentifierLiteral"""
 
-        append = opts.get('append', '')  # <- could be #constructor or None ('')
-
-        return f'(char*)"{self.token().value()}{append}"' + (';' if top else '')
+        return f'(char*)"{self.token().value()}"' + (';' if top else '')

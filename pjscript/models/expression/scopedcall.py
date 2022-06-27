@@ -14,10 +14,8 @@ class ScopedCallExpression(CallExpression):
 
         """Generate ScopedCallExpression"""
 
-        append = '#constructor' if self.instantiation() else ''  # look up for 'constructor' in this case
-
-        cast = 'constructor' if self.instantiation() else 'function'  # determine the right 'cast' method
-
         args = '{' + ', '.join(map(lambda argument:  argument.generate() + '->some()', self.args())) + '}'
 
-        return f'_env->get({self.name().generate(append=append)})->{cast}()({args})' + (';'if top else '')
+        inst_bf = 'true' if self.instantiation() else 'false'  # <---- '$instantiation' flag boolean value
+
+        return f'_env->get({self.name().generate()})->operator()({args}, {inst_bf})' + (';'if top else '')

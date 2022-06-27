@@ -18,13 +18,11 @@ class MemberCallExpression(CallExpression):
 
         parts = self.name().token().value().split('.')  # <---- split a member name by the dot-character
 
-        parts[-1] += ('#constructor' if self.instantiation() else '')   # look up for constructor, if so
-
         generated = f'_env->get((char*)"{parts[0]}")' \
                     + ''.join([f'->get((char*)"{p}")' for p in parts[1:]])  # <-- get the generated form
 
-        cast = 'constructor' if self.instantiation() else 'function'   # determine the right cast method
+        args = '{' + ','.join(map(lambda _arg: '(' + _arg.generate() + ')->some()',  self.args())) + '}'
 
-        args = '{' + ','.join(map(lambda argum: '(' + argum.generate() + ')->some()', self.args())) + '}'
+        inst_bf = 'true' if self.instantiation() else 'false'  # <-- '$instantiation' flag boolean value
 
-        return f'{generated}->{cast}()({args})' + (';'if top else '')  # <-- return generated expression
+        return f'{generated}->operator()({args}, {inst_bf})' + (';'if top else '')  # the C++ expression
