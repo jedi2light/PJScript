@@ -8,5 +8,5 @@ class StringPrimitive : public Primitive {
 public:
     String* to_object();
     StringPrimitive();
-    StringPrimitive(char* raw);
+    StringPrimitive(char* raw); // has one
 };

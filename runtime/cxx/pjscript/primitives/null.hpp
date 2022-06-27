@@ -8,5 +8,5 @@ class NullPrimitive : public Primitive {
 public:
     Object* to_object();
     NullPrimitive();
-    // no constructor from *raw
+    // can not be initialized from char*
 };

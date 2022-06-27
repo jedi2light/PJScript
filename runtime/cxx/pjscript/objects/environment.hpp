@@ -5,4 +5,5 @@
 class Environment : public Object {
 public:
     Environment();
+    // has no Primitive constructor
 };

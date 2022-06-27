@@ -11,16 +11,16 @@ add_library(PJScriptShared SHARED pjscript/objects/object.hpp
                                   pjscript/objects/environment.cpp
                                   pjscript/objects/string.hpp
                                   pjscript/objects/string.cpp
-                                  pjscript/objects/function.hpp
-                                  pjscript/objects/function.cpp
-                                  pjscript/objects/constructor.hpp
-                                  pjscript/objects/constructor.cpp
+                                  pjscript/objects/boolean.hpp
+                                  pjscript/objects/boolean.cpp
                                   pjscript/primitives/primitive.hpp
                                   pjscript/primitives/primitive.cpp
                                   pjscript/primitives/null.hpp
                                   pjscript/primitives/null.cpp
                                   pjscript/primitives/string.hpp
                                   pjscript/primitives/string.cpp
+                                  pjscript/primitives/boolean.cpp
+                                  pjscript/primitives/boolean.hpp
                                   pjscript.hpp
                                   pjscript.cpp)
 
@@ -32,16 +32,14 @@ add_library(PJScriptStatic STATIC pjscript/objects/object.hpp
                                   pjscript/objects/environment.cpp
                                   pjscript/objects/string.hpp
                                   pjscript/objects/string.cpp
-                                  pjscript/objects/function.hpp
-                                  pjscript/objects/function.cpp
-                                  pjscript/objects/constructor.hpp
-                                  pjscript/objects/constructor.cpp
                                   pjscript/primitives/primitive.hpp
                                   pjscript/primitives/primitive.cpp
                                   pjscript/primitives/null.hpp
                                   pjscript/primitives/null.cpp
                                   pjscript/primitives/string.hpp
                                   pjscript/primitives/string.cpp
+                                  pjscript/primitives/boolean.cpp
+                                  pjscript/primitives/boolean.hpp
                                   pjscript.hpp
                                   pjscript.cpp)
 

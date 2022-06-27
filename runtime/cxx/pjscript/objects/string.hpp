@@ -5,5 +5,5 @@
 class String : public Object {
 public:
     String();
-    String(Primitive*);
+    String(Primitive*); // has
 };

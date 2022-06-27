@@ -3,11 +3,11 @@
 #include "console.hpp"
 
 #include "../primitives/string.hpp"
+#include "../primitives/boolean.hpp"
 
 // todo: we should set 'version' variable to match our runtime' short ref
 
 Environment::Environment() {
-    this->m_type = ENVIRONMENT_OBJ;
     this->m_name = (char*)"Environment";
 
     this->m_primitive = nullptr;
@@ -17,11 +17,20 @@ Environment::Environment() {
            Some* some =  args[0];
            switch(some->type()) {
            case OBJECT:
-               return (new StringPrimitive((char*)"object"))->some();
-               break;
-           case FUNCTION:
-               return (new StringPrimitive((char*)"function"))->some();
-               break;
+               switch(some->object()->type()) {
+               case CASUAL_OBJ:
+                   return (new StringPrimitive((char*)"object"))->some();
+                   break;
+               case STRING_OBJ:
+                   return (new StringPrimitive((char*)"object"))->some();
+                   break;
+               case CALLABLE_OBJ:
+                 return (new StringPrimitive((char*)"function"))->some();
+                 break;
+               case BOOLEAN_OBJ:
+                   return (new StringPrimitive((char*)"object"))->some();
+                   break;
+               }
            case PRIMITIVE:
                switch (some->primitive()->type()) {
                case NIL:
@@ -32,11 +41,10 @@ Environment::Environment() {
                case STRING:
                    return (new StringPrimitive((char*)"string"))->some();
                    break;
+               case BOOLEAN:
+                   return (new StringPrimitive((char*)"boolean"))->some();
+                   break;
                }
-               break;
-           case CONSTRUCTOR:
-               return (new StringPrimitive((char*)"constructor"))->some();
-               break;
            }
            return (new StringPrimitive((char*)"unreachable/bug"))->some();
         },
@@ -69,6 +77,24 @@ Environment::Environment() {
             if (args.empty())
                 return new String();
             return new String(args[0]->primitive());
+        },
+        true
+    );
+    this->set(
+        (char*)"Boolean",
+        [](ArgumentsType args) {
+            if (args.empty())
+                return (new BooleanPrimitive())->some();
+            return args[0]->primitive()->some();
+        },
+        true
+    );
+    this->set(
+        (char*)"Boolean#constructor",
+        [](ArgumentsType args) {
+            if (args.empty())
+                return new Boolean();
+            return new Boolean(args[0]->primitive());
         },
         true
     );

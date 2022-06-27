@@ -5,10 +5,10 @@
 #include "../primitives/null.hpp"
 
 Console::Console() {
-    this->m_type = CONSOLE_OBJ;
+    this->m_type = CASUAL_OBJ;
     this->m_name = (char*)"Console";
-
     this->m_primitive = nullptr;
+
     this->set(
         (char*)"log",
         [](ArgumentsType args) {

@@ -11,8 +11,33 @@ console.log(typeof(new String("foo")));
 console.log(String);
 console.log(String("foo"));
 console.log(new String("foo"));
-var foo___toString = new String("foo");
-console.log(foo___toString.toString());
+var foo_str_instance = new String("foo");
+console.log(foo_str_instance.toString());
+
+my = String;
+
+console.log(my);
+
+console.log(true);
+console.log(false);
+console.log(Boolean());
+console.log(Boolean(true));
+console.log(Boolean(false));
+console.log(new Boolean);
+console.log(new Boolean(true));
+console.log(new Boolean(false));
+console.log(typeof(true));
+console.log(typeof(false));
+console.log(typeof(Boolean));
+console.log(typeof(Boolean(true)));
+console.log(typeof(Boolean(false)));
+console.log(typeof(new Boolean()));
+console.log(typeof(new Boolean(true)));
+console.log(typeof(new Boolean(false)));
+
+false_boolean = new Boolean();
+console.log(false_boolean.toString());
+console.log(typeof(false_boolean.toString));
 
 a = Object();
 a.moo = new Object();

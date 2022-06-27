@@ -3,7 +3,9 @@
 class Some;
 class Object;
 
-enum PrimitiveType { NIL, STRING };
+enum PrimitiveType { NIL,
+                     STRING,
+                     BOOLEAN };
 
 class Primitive {
 protected:
