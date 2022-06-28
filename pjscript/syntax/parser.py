@@ -220,6 +220,11 @@ class Parser:  # pylint: disable=too-few-public-methods  # it's okay to have onl
         if len(tokens) == 1 and tokens[0].is_boolean_keyword():
             return BooleanLiteral(tokens[0])  # <-------- parse ('true', 'false') keyword as a BooleanLiteral
 
+        # undefined keyword
+
+        if len(tokens) == 1 and tokens[0].is_undefined_keyword():
+            return UndefinedLiteral(tokens[0])  # <-------------------------------- parse as UndefinedLiteral
+
         # Object;
         # foo.bar;
         # single identifier
