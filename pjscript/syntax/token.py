@@ -114,11 +114,13 @@ class Token:      # pylint: disable=too-many-public-methods
         return self.is_operator() and self._value == '-'
 
     def is_mul_operator(self) -> bool:
+
         """Returns whether token is mul operator"""
 
         return self.is_operator() and self._value == '*'
 
     def is_div_operator(self) -> bool:
+
         """Returns whether token is div operator"""
 
         return self.is_operator() and self._value == '/'
