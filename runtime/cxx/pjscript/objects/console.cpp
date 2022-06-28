@@ -2,7 +2,7 @@
 
 #include "console.hpp"
 
-#include "../primitives/null.hpp"
+#include "../primitives/undefined.hpp"
 
 Console::Console() {
     this->m_type = CASUAL_OBJ;
@@ -15,7 +15,7 @@ Console::Console() {
             for (Some* arg : args)
                 std::cout << arg->view() << " ";
             std::cout << std::endl;
-            return (new NullPrimitive())->some();
+            return (new UndefinedPrimitive())->some();
         },
         true
     );
@@ -26,7 +26,7 @@ Console::Console() {
                 std::cerr << arg->view() << " ";
             std::cerr << std::endl;
             }
-            return (new NullPrimitive())->some();
+            return (new UndefinedPrimitive())->some();
         },
         true
     );

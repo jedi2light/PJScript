@@ -5,7 +5,8 @@ class Object;
 
 enum PrimitiveType { NIL,
                      STRING,
-                     BOOLEAN };
+                     BOOLEAN,
+                     UNDEFINED };
 
 class Primitive {
 protected:

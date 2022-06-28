@@ -15,6 +15,8 @@ add_library(PJScriptShared SHARED pjscript/objects/object.hpp
                                   pjscript/objects/boolean.cpp
                                   pjscript/primitives/primitive.hpp
                                   pjscript/primitives/primitive.cpp
+                                  pjscript/primitives/undefined.hpp
+                                  pjscript/primitives/undefined.cpp
                                   pjscript/primitives/null.hpp
                                   pjscript/primitives/null.cpp
                                   pjscript/primitives/string.hpp
@@ -34,6 +36,8 @@ add_library(PJScriptStatic STATIC pjscript/objects/object.hpp
                                   pjscript/objects/string.cpp
                                   pjscript/primitives/primitive.hpp
                                   pjscript/primitives/primitive.cpp
+                                  pjscript/primitives/undefined.hpp
+                                  pjscript/primitives/undefined.cpp
                                   pjscript/primitives/null.hpp
                                   pjscript/primitives/null.cpp
                                   pjscript/primitives/string.hpp

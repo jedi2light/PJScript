@@ -44,6 +44,9 @@ Environment::Environment() {
                case BOOLEAN:
                    return (new StringPrimitive((char*)"boolean"))->some();
                    break;
+               case UNDEFINED:
+                 return (new StringPrimitive((char*)"undefined"))->some();
+                 break;
                }
            }
            return (new StringPrimitive((char*)"unreachable/bug"))->some();
