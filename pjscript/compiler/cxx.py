@@ -29,8 +29,10 @@ class CXXCompiler:         # pylint: disable=too-few-public-methods # (it's more
 
         """This will generate <project>.sh context"""
 
-        return f'#/usr/bin/env bash\n'\
-               f'LD_LIBRARY_PATH=runtime/cxx/build {binary}'
+        return f'#!/usr/bin/env bash\n'\
+               f'#macOS uses its own linker variable name\n'\
+               f'export LD_LIBRARY_PATH=runtime/cxx/build\n'\
+               f'DYLD_LIBRARY_PATH=$LD_LIBRARY_PATH {binary}'
 
     @staticmethod
     def _generate_main_ctx() -> str:
