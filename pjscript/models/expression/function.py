@@ -50,9 +50,9 @@ class FunctionExpression(BaseExpression):
 
         """Generate FunctionExpression"""
 
-        # TODO: we need to actually generate FunctionObject
+        # TODO: we need to actually generate 'FunctionObject'
 
-        return 'new NullPrimitive()' + (';' if top else '')
+        return '(new NullPrimitive())' + self._semicolon(top)
 
     def __repr__(self) -> str:
 

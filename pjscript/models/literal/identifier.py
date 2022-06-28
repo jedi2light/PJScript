@@ -11,4 +11,4 @@ class IdentifierLiteral(BaseLiteral):
 
         """Generate "IdentifierLiteral"""
 
-        return f'(char*)"{self.token().value()}"' + (';' if top else '')
+        return f'(char*)"{self.token().value()}"' + self._semicolon(top)
