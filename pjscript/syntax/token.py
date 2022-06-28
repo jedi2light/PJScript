@@ -215,7 +215,7 @@ class Token:      # pylint: disable=too-many-public-methods
 
     def is_mutability_keyword(self) -> bool:
 
-        """Returns whether token is auto/const keyword"""
+        """Returns whether token is mutability keyword"""
 
         return self.is_identifier() and self._value in ['var',
                                                         'const']
@@ -247,7 +247,7 @@ class Token:      # pylint: disable=too-many-public-methods
 
     def has_a_dot(self) -> bool:
 
-        """Returns whether token value has dot"""
+        """Returns whether token value has a dot character"""
 
         return self.is_regular_identifier() and '.' in self._value
 
