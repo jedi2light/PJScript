@@ -94,27 +94,6 @@ class Parser:  # pylint: disable=too-few-public-methods  # it's okay to have onl
 
         return groups
 
-    def _parse_function_expression(self, tokens: List[Token]) -> FunctionExpression:
-
-        """Returns parsed FunctionExpression"""
-
-        closing_bracket_index = 0
-        for (idx,
-             token) in enumerate(tokens):
-            if token.is_closing_bracket():
-                closing_bracket_index = idx  # <--- find closing bracket token index or set it to 0 otherwise
-
-        assert closing_bracket_index, f'{tokens[0].span()}: function: unable to find nearest closing bracket'
-
-        # TODO: we need also check whether each group contains only one regular identifier, and *fail* if not
-        params = [IdentifierLiteral(t[0])
-                  for t in self._args_by(tokens[2:closing_bracket_index], lambda t: t.is_coma())]    # params
-
-        body = [self._parse_expression(raw)
-                for raw in self._expressions(tokens[closing_bracket_index + 2:len(tokens) - 1])]   # and body
-
-        return FunctionExpression(params, body)  # <----------------------- return parsed function expression
-
     @staticmethod
     def _find_preferred_operator(tokens: List[Token]) -> Tuple[int, str]:
 
@@ -139,19 +118,12 @@ class Parser:  # pylint: disable=too-few-public-methods  # it's okay to have onl
             return add_found[0][0], BinaryExpression.Add  # <------------- return found '+' operator position
         return sub_found[0][0], BinaryExpression.Sub  # <----------------- return found '-' operator position
 
-    def _parse_binary_expression(self, tokens: List[Token]) -> BinaryExpression:
+    @staticmethod
+    def _contains_arithmetical_operator_token(tokens: List[Token]) -> bool:
 
-        """Returns parsed BinaryExpression"""
+        """Returns whether tokens list contains at least one arithmetical operator"""
 
-        # TODO: improve assertion, we should not allow nothing at the start/end, but literals and identifiers
-
-        assert not tokens[0].is_arithmetical_operator() \
-               and not tokens[-1].is_arithmetical_operator(),  f'{tokens[0].span()}: wrong expression syntax'
-
-        index, operator = self._find_preferred_operator(tokens)  # <------------ find most preferred operator
-        lhs = self._parse_expression(tokens[:index])  # <------------------- recursively parse left-hand-side
-        rhs = self._parse_expression(tokens[index + 1:])  # <-------------- recursively parse right-hand-side
-        return BinaryExpression(operator, lhs, rhs)  # <------------- return parsed BinaryExpression instance
+        return bool(tuple(filter(lambda token: token.is_arithmetical_operator(), tokens)))
 
     def _parse_call_expression(self, tokens: List[Token], instantiation: bool) -> CallExpression:
 
@@ -185,12 +157,41 @@ class Parser:  # pylint: disable=too-few-public-methods  # it's okay to have onl
             if tokens[0].has_a_dot() \
             else ScopedAssignmentExpression(mutable, lhs, rhs)   # <--- dispatch between two Assignment types
 
-    @staticmethod
-    def _contains_arithmetical_operator_token(tokens: List[Token]) -> bool:
+    def _parse_function_expression(self, tokens: List[Token]) -> FunctionExpression:
 
-        """Returns whether tokens list contains at least one arithmetical operator"""
+        """Returns parsed FunctionExpression"""
 
-        return bool(tuple(filter(lambda token: token.is_arithmetical_operator(), tokens)))
+        closing_bracket_index = 0
+        for (idx,
+             token) in enumerate(tokens):
+            if token.is_closing_bracket():
+                closing_bracket_index = idx  # <--- find closing bracket token index or set it to 0 otherwise
+
+        # TODO: we need also check whether each group contains only one regular identifier, and *fail* if not
+
+        assert closing_bracket_index, f'{tokens[0].span()}: function: unable to find nearest closing bracket'
+
+        params = [IdentifierLiteral(t[0])
+                  for t in self._args_by(tokens[2:closing_bracket_index], lambda t: t.is_coma())]    # params
+
+        body = [self._parse_expression(raw)
+                for raw in self._expressions(tokens[closing_bracket_index + 2:len(tokens) - 1])]   # and body
+
+        return FunctionExpression(params, body)  # <----------------------- return parsed function expression
+
+    def _parse_binary_expression(self, tokens: List[Token]) -> BinaryExpression:
+
+        """Returns parsed BinaryExpression"""
+
+        # TODO: improve assertion, we should not allow nothing at the start/end, but literals and identifiers
+
+        assert not tokens[0].is_arithmetical_operator() \
+               and not tokens[-1].is_arithmetical_operator(),  f'{tokens[0].span()}: wrong expression syntax'
+
+        index, operator = self._find_preferred_operator(tokens)  # <------------ find most preferred operator
+        lhs = self._parse_expression(tokens[:index])  # <------------------- recursively parse left-hand-side
+        rhs = self._parse_expression(tokens[index + 1:])  # <-------------- recursively parse right-hand-side
+        return BinaryExpression(operator, lhs, rhs)  # <------------- return parsed BinaryExpression instance
 
     def _parse_expression(self, tokens: List[Token]) -> BaseModel:  # pylint: disable=R0911  # it's okay, bro
 
