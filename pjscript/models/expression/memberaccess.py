@@ -12,9 +12,4 @@ class MemberAccessExpression(AccessExpression):
 
         """Generate MemberAccessExpression"""
 
-        # TODO: figure out, how to offload certain amount of logic to the IdentifierLiteral?
-
-        parts = self.name().token().value().split('.')  # <- split name by the '.' character
-
-        return f'_env->get((char*)"{parts[0]}")' + \
-               ''.join([f'->get((char*)"{pt}")' for pt in parts[1:]]) + (';' if top else '')
+        return f'{self._get_member_gen(self.name())}' + self._semicolon(top)

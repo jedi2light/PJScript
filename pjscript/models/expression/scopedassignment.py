@@ -12,7 +12,4 @@ class ScopedAssignmentExpression(AssignmentExpression):
 
         """Generate ScopedAssignmentExpression"""
 
-        return f'_env->set(' \
-               f'{self.lhs().generate()}, ' \
-               f'{self.rhs().generate()}, ' \
-               f'{"true" if self.mutable() else "false"})' + (';' if top else '')
+        return f'{self._set_gen(self.lhs(), self.rhs(), self.mutable())}' + self._semicolon(top)

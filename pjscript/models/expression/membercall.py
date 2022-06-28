@@ -14,15 +14,8 @@ class MemberCallExpression(CallExpression):
 
         """Generate MemberCallExpression"""
 
-        # TODO: need to figure out how to offload certain amount of logic to the IdentifierLiteral class
+        args = '{' + ','.join(map(lambda _argument: '(' + _argument.generate() + ')->some()', self.args())) + '}'
 
-        parts = self.name().token().value().split('.')  # <---- split a member name by the dot-character
+        instantiation = 'true' if self.instantiation() else 'false'  # <--------- '$instantiation' argument value
 
-        generated = f'_env->get((char*)"{parts[0]}")' \
-                    + ''.join([f'->get((char*)"{p}")' for p in parts[1:]])  # <-- get the generated form
-
-        args = '{' + ','.join(map(lambda _arg: '(' + _arg.generate() + ')->some()',  self.args())) + '}'
-
-        inst_bf = 'true' if self.instantiation() else 'false'  # <-- '$instantiation' flag boolean value
-
-        return f'{generated}->operator()({args}, {inst_bf})' + (';'if top else '')  # the C++ expression
+        return f'{self._get_member_gen(self.name())}->operator()({args}, {instantiation})' + self._semicolon(top)

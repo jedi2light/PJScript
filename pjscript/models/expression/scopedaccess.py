@@ -12,4 +12,4 @@ class ScopedAccessExpression(AccessExpression):
 
         """Generate ScopedAccessExpression"""
 
-        return f'_env->get({self.name().generate()})' + (';' if top else '')
+        return f'{self._get_gen(self.name())}' + self._semicolon(top)

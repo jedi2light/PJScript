@@ -14,8 +14,8 @@ class ScopedCallExpression(CallExpression):
 
         """Generate ScopedCallExpression"""
 
-        args = '{' + ', '.join(map(lambda argument:  argument.generate() + '->some()', self.args())) + '}'
+        args = '{' + ', '.join(map(lambda argument: argument.generate() + '->some()',  self.args())) + '}'
 
-        inst_bf = 'true' if self.instantiation() else 'false'  # <---- '$instantiation' flag boolean value
+        instantiation = 'true' if self.instantiation() else 'false'  # <-- '$instantiation' argument value
 
-        return f'_env->get({self.name().generate()})->operator()({args}, {inst_bf})' + (';'if top else '')
+        return f'{self._get_gen(self.name())}->operator()({args}, {instantiation})' + self._semicolon(top)
