@@ -145,7 +145,7 @@ class Lexer:  # pylint: disable=too-few-public-methods  # it's okay :)
                 while self._has_next_symbol():
                     if self._current_symbol_is_newline():
                         break
-                    self._advance_and_increment_char_no()
+                    self._advance_and_increment_char_no()  # // ......
 
             if (self._current_symbol() == '/'
                     and self._has_next_symbol()
