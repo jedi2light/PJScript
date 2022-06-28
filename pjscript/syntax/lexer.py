@@ -147,6 +147,20 @@ class Lexer:  # pylint: disable=too-few-public-methods  # it's okay :)
                         break
                     self._advance_and_increment_char_no()
 
+            if (self._current_symbol() == '/'
+                    and self._has_next_symbol()
+                    and self._next_symbol() == '*'):
+                self._advance_and_increment_char_no()
+                while self._has_next_symbol():
+                    if (self._current_symbol() == '*'
+                            and self._has_next_symbol()
+                            and self._next_symbol() == '/'):
+                        # TODO: also match newline inside of a comment
+                        self._advance_and_increment_char_no()   # skip
+                        self._advance_and_increment_char_no()   # skip
+                        break
+                    self._advance_and_increment_char_no()  # /* ... */
+
             elif self._current_symbol_is_coma():
                 self._tokens.append(Token(
                     Token.Coma, self._current_symbol(), self._span()))
