@@ -14,10 +14,7 @@ console.log(new String("foo"));
 var foo_str_instance = new String("foo");
 console.log(foo_str_instance.toString());
 
-my = String;
-
-console.log.X = "X";
-console.log(console.log.X); // does work?
+var my = String;
 
 console.log(my);
 
@@ -38,12 +35,12 @@ console.log(typeof(new Boolean()));
 console.log(typeof(new Boolean(true)));
 console.log(typeof(new Boolean(false)));
 
-false_boolean = new Boolean();
+var false_boolean = new Boolean();
 console.log(false_boolean.toString());
 console.log(typeof(false_boolean.toString));
 console.log(typeof(false_boolean.toString()));
 
-a = Object();
+var a = Object();
 a.moo = new Object();
 a.foo = "42";
 a.bar = null;
