@@ -191,7 +191,8 @@ class Token:      # pylint: disable=too-many-public-methods
                 or self.is_boolean_keyword()
                 or self.is_mutability_keyword()
                 or self.is_function_keyword()
-                or self.is_return_keyword())
+                or self.is_return_keyword()
+                or self.is_undefined_keyword())
 
     def is_new_keyword(self) -> bool:
 
@@ -230,6 +231,12 @@ class Token:      # pylint: disable=too-many-public-methods
         """Returns whether token is return keyword"""
 
         return self.is_identifier() and self._value == 'return'
+
+    def is_undefined_keyword(self) -> bool:
+
+        """Returns whether token is undefined keyword"""
+
+        return self.is_identifier() and self._value == 'undefined'
 
     def is_regular_identifier(self) -> bool:
 
