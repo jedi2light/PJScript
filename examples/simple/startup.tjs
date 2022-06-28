@@ -14,6 +14,10 @@ console.log(new String("foo"));
 var foo_str_instance = new String("foo");
 console.log(foo_str_instance.toString());
 
+var ab = /* test lexer 'block comments' support */ undefined;
+console.log(ab);
+console.log(typeof(ab));
+
 var my = String;
 
 console.log(my);
