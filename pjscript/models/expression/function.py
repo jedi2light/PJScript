@@ -14,15 +14,18 @@ class FunctionExpression(BaseExpression):
 
     _parameters: List[IdentifierLiteral]
     _body: List[BaseModel]
+    _returns: BaseModel
 
     def __init__(self,
                  parameters: List[IdentifierLiteral],
-                 body: List[BaseModel]) -> None:
+                 body: List[BaseModel],
+                 returns: BaseModel) -> None:
 
         """Instantiate FunctionExpression"""
 
         self._parameters = parameters
         self._body = body
+        self._returns = returns
 
     def parameters(self) -> List[IdentifierLiteral]:
 
@@ -36,6 +39,12 @@ class FunctionExpression(BaseExpression):
 
         return self._body
 
+    def returns(self) -> BaseModel:
+
+        """Return FunctionExpression return expression"""
+
+        return self._returns
+
     def to_dict(self) -> dict:
 
         """Returns dict representation"""
@@ -43,7 +52,8 @@ class FunctionExpression(BaseExpression):
         return {
             "class": 'FunctionExpression',
             "parameters": [param.to_dict() for param in self.parameters()],
-            "body": [expr.to_dict() for expr in self.body()]
+            "body": [expr.to_dict() for expr in self.body()],
+            "returns": self.returns().to_dict()
         }
 
     def generate(self, top: bool = False, **opts) -> str:
