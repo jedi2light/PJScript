@@ -60,9 +60,26 @@ class FunctionExpression(BaseExpression):
 
         """Generate FunctionExpression"""
 
-        # TODO: we need to actually generate 'FunctionObject'
+        body = 'Object* _new = new Object();\n' \
+               '_new->set((char*)"this", _new, false);\n'
 
-        return '(new NullPrimitive())' + self._semicolon(top)
+        if self._returns:
+            ret = f'return ({  self._returns.generate(emv = "_new")  })->some();'
+        else:
+            ret = 'return (new UndefinedPrimitive())-some();'    # default retval
+
+        for each in self.body():
+            body += f'{each.generate(env="_new")};\n'  # <------ make expressions
+
+        body += '_new->del((char*)"this");\n'  # <----------------- delete "this"
+
+        body += f'if ($is_instantiation)\n' \
+                f'    return _new->some();\n' \
+                f'{ret}'  # <--------------------- detect return value in runtime
+
+        return f'[_](ArgsType args, bool $is_instantiation) {{\n' \
+               f'{body}' \
+               f'}}' + self._semicolon(top)  # <--0- generated FunctionExpression
 
     def __repr__(self) -> str:
 
