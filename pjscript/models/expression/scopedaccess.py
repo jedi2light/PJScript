@@ -12,4 +12,6 @@ class ScopedAccessExpression(AccessExpression):
 
         """Generate ScopedAccessExpression"""
 
-        return f'{self._get_gen(self.name())}' + self._semicolon(top)
+        environment = opts.get('env', '_env')  # <------------- environment to use
+
+        return f'{self._get_gen(self.name(), environment)}' + self._semicolon(top)

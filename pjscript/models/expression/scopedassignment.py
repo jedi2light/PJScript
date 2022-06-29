@@ -12,4 +12,6 @@ class ScopedAssignmentExpression(AssignmentExpression):
 
         """Generate ScopedAssignmentExpression"""
 
-        return f'{self._set_gen(self.lhs(), self.rhs(), self.mutable())}' + self._semicolon(top)
+        environment = opts.get('env', '_env')  # <---------------------------------------- environment to use
+
+        return f'{self._set_gen(self.lhs(), self.rhs(), self.mutable(), environment)}' + self._semicolon(top)

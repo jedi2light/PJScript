@@ -14,8 +14,10 @@ class MemberCallExpression(CallExpression):
 
         """Generate MemberCallExpression"""
 
+        environ = opts.get('env', '_env')  # <------------------------------------------------ environment to use
+
         args = '{' + ','.join(map(lambda _argument: '(' + _argument.generate() + ')->some()', self.args())) + '}'
 
-        instantiation = 'true' if self.instantiation() else 'false'  # <--------- '$instantiation' argument value
+        inst = 'true' if self.instantiation() else 'false'  # <--------- ---------'$instantiation' argument value
 
-        return f'{self._get_member_gen(self.name())}->operator()({args}, {instantiation})' + self._semicolon(top)
+        return f'{self._get_member_gen(self.name(), environ)}->operator()({args}, {inst})' + self._semicolon(top)

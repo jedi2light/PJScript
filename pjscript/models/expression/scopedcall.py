@@ -14,8 +14,10 @@ class ScopedCallExpression(CallExpression):
 
         """Generate ScopedCallExpression"""
 
-        args = '{' + ', '.join(map(lambda argument: argument.generate() + '->some()',  self.args())) + '}'
+        environment = opts.get('env', '_env')  # <-------------------------------------------------- environment to use
 
-        instantiation = 'true' if self.instantiation() else 'false'  # <-- '$instantiation' argument value
+        args = '{' + ', '.join(map(lambda argument: argument.generate() + '->some()',  self.args())) + '}'  # call args
 
-        return f'{self._get_gen(self.name())}->operator()({args}, {instantiation})' + self._semicolon(top)
+        instantiation = 'true' if self.instantiation() else 'false'  # <--------------- '$instantiation' argument value
+
+        return f'{self._get_gen(self.name(), environment)}->operator()({args}, {instantiation})' + self._semicolon(top)
