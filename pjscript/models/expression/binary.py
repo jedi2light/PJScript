@@ -63,7 +63,7 @@ class BinaryExpression(BaseExpression):
 
         """Generate BinaryExpression"""
 
-        # TODO: we need to support this, in our CXX runtime
+        # TODO: add support in 'runtime' in the first place
 
         return 'new NullPrimitive()' + (';' if top else '')
 
