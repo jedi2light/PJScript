@@ -11,12 +11,32 @@ console.log(typeof(new String("foo")));
 console.log(String);
 console.log(String("foo"));
 console.log(new String("foo"));
+
 var foo_str_instance = new String("foo");
+
 console.log(foo_str_instance.toString());
 
 var ab = /* test lexer 'block comments' support */ undefined;
 console.log(ab);
 console.log(typeof(ab));
+
+const Foo = function () {
+	this.attribute = "42";
+	return "something";
+};
+
+var hy = new Foo();
+
+console.log('This one is also a valid string literal, bro!');
+
+console.log(Foo);
+console.log(typeof(Foo));
+console.log(hy);
+console.log(typeof(hy));
+console.log(hy.attribute);
+console.log(Foo());
+console.log(typeof(Foo()));
+console.log(typeof(hy.attribute));
 
 var my = String;
 
