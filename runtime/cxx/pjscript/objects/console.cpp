@@ -11,7 +11,7 @@ Console::Console() {
 
     this->set(
         (char*)"log",
-        [](ArgumentsType args, bool) {
+        [this](ArgsType args, bool) {
             for (Some* arg : args)
                 std::cout << arg->view() << " ";
             std::cout << std::endl;
@@ -21,11 +21,10 @@ Console::Console() {
     );
     this->set(
         (char*)"error",
-        [](ArgumentsType args, bool) {
-            for (Some* arg : args) {
+        [this](ArgsType args, bool) {
+            for (Some* arg : args)
                 std::cerr << arg->view() << " ";
             std::cerr << std::endl;
-            }
             return (new UndefinedPrimitive())->some();
         },
         true

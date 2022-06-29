@@ -16,8 +16,8 @@ Boolean::Boolean() {
 
     this->set(
         (char*)"toString",
-        [this](ArgumentsType args, bool) {
-            return (new StringPrimitive(this->raw()))->some();
+        [this](ArgsType args, bool) {
+           return (new StringPrimitive(this->raw()))->some();
         },
         true
     );
@@ -30,7 +30,7 @@ Boolean::Boolean(Primitive* primitive) {
 
     this->set(
         (char*)"toString",
-        [this](ArgumentsType args, bool) {
+        [this](ArgsType args, bool) {
            return (new StringPrimitive(this->raw()))->some();
         },
         true

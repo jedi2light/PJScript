@@ -26,18 +26,18 @@ Object* Some::object() {
     return this->m_object;
 }
 
-Some* Some::operator () (ArgumentsType args, bool $instantiation) {
-    if (this->m_object)
-        return this->m_object->operator()(args, $instantiation);
-    return nullptr;
-}
-
 Primitive* Some::primitive() {
     return this->m_primitive;
 }
 
 bool Some::is_mutable() {
     return this->m_is_mutable;
+}
+
+Some* Some::operator() (ArgsType args, bool $is_instantiation) {
+    if (this->m_object)
+        return this->m_object->operator()(args, $is_instantiation);
+    return nullptr;
 }
 
 bool exists_and_mutable(Some* some) {
@@ -85,6 +85,11 @@ Some* Some::get(char* name, bool check) {
         return this->m_primitive->to_object()->get(name); break;
     }
     return UNREACHABLE_NULLPTR;  // this is to suppress clang++ warning
+}
+
+void Some::del(char* name) {
+    if (this->m_object)
+        this->m_object->del(name); // delete an object propetry by name
 }
 
 std::string object_to_string(Object* object) {
@@ -177,11 +182,11 @@ Some* Some::some() {
     return this; // jsut a tiny, small proxy function, but it is useful
 }
 
-Object::Object() : m_primitive(nullptr){}
+Object::Object() {}
 
-Object::Object(NFunction function) : m_function(function){}
+Object::Object(NFunction function) : m_function(function) {}
 
-Object::Object(Primitive* primitive) : m_primitive(primitive){}
+Object::Object(Primitive* primitive) : m_primitive(primitive) {}
 
 char* Object::name() {
     return this->m_name;
@@ -195,12 +200,20 @@ ObjType Object::type() {
     return this->m_type;
 }
 
-Some* Object::operator () (ArgumentsType args, bool is_instantiation) {
-    return this->m_function(args, is_instantiation);
+Object* Object::called() {
+    return this->m_called;
 }
 
-Primitive* Object::primitive() {
-    return this->m_primitive;
+void Object::flushCalled() {
+    this->m_called = nullptr;
+}
+
+void Object::setCalled(Object* called) {
+    this->m_called = called;
+}
+
+void Object::setParent(Object* parent) {
+    this->m_parent = parent;
 }
 
 void Object::setType(ObjType type) {
@@ -211,23 +224,39 @@ void Object::setAlias(char* alias) {
     this->m_alias = alias;
 }
 
+Primitive* Object::primitive() {
+    return this->m_primitive;
+}
+
 std::unordered_map<char*, Some*> Object::props() {
     return this->m_props;
 }
 
+Some* Object::operator() (ArgsType args, bool $is_instantiation) {
+    this->m_parent->setCalled(this); // set a function just called
+    Some* retval = this->m_function(args, $is_instantiation);
+    this->m_parent->flushCalled(); // flush called() function slot
+    return retval; // return a called function retruned value back
+}
+
+void groom_object(Object* object, ObjType type, char* name) {
+    object->setType(type);
+    object->setAlias(name);
+}
+
 void Object::set(char* name, Object* object, bool is_mutable) {
     if (object) {
-        object->setAlias(name);
+        groom_object(object, CASUAL_OBJ, name);
         this->m_props.insert({name, new Some(object, is_mutable)});
     }
 }
 
 void Object::set(char* name, NFunction function, bool is_mutable) {
     if (function) {
-        Object* fn_object = new Object(function);
-        fn_object->setType(CALLABLE_OBJ);
-        fn_object->setAlias(name);
-        this->m_props.insert({name, new Some(fn_object, is_mutable)});
+        Object* object = new Object(function);
+        object->setParent(this); // set parent (only for functions)
+        groom_object(object, CALLABLE_OBJ, name);
+        this->m_props.insert({name, new Some(object, is_mutable)});
     }
 }
 
@@ -262,6 +291,10 @@ Some* Object::get(char* name, bool check) {
         exit(1);
     }
     return nullptr;  // if we didn't find anything matching 'name', return NULL;
+}
+
+void Object::del(char* name) {
+    this->m_props.erase(name); // delete an arbitary object property by its name
 }
 
 char* Object::raw() {

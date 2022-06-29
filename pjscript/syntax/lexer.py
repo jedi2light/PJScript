@@ -125,6 +125,12 @@ class Lexer:  # pylint: disable=too-few-public-methods  # it's okay :)
 
         return self._current_symbol() == '"'
 
+    def _current_symbol_is_single_quote(self) -> bool:
+
+        """Returns whether current symbol is single quote"""
+
+        return self._current_symbol() == "'"
+
     def _current_symbol_is_character(self) -> bool:
 
         """Returns whether current symbol is character"""
@@ -207,6 +213,17 @@ class Lexer:  # pylint: disable=too-few-public-methods  # it's okay :)
                 while self._has_next_symbol():
                     self._advance_and_increment_char_no()
                     if not self._current_symbol_is_double_quote():
+                        value += self._current_symbol()
+                    else:
+                        break
+                self._tokens.append(Token(Token.String, value, self._span()))
+                self._advance_and_increment_char_no()
+
+            elif self._current_symbol_is_single_quote():
+                value = ""
+                while self._has_next_symbol():
+                    self._advance_and_increment_char_no()
+                    if not self._current_symbol_is_single_quote():
                         value += self._current_symbol()
                     else:
                         break

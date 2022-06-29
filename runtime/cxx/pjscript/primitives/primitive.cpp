@@ -2,6 +2,8 @@
 
 #include "../objects/object.hpp"
 
+#include <iostream>
+
 Primitive::Primitive(char* raw) {
     this->m_raw = raw;
 }

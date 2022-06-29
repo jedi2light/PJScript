@@ -11,10 +11,10 @@ class Object;
 
 enum VarType { OBJECT,       PRIMITIVE };
 enum ObjType { CASUAL_OBJ,   STRING_OBJ,
-               CALLABLE_OBJ, BOOLEAN_OBJ };
+               BOOLEAN_OBJ,  CALLABLE_OBJ };
 
-typedef std::vector<Some*> ArgumentsType;
-typedef std::function<Some*(ArgumentsType, bool)> NFunction;
+typedef std::vector<Some*> ArgsType;
+typedef std::function<Some*(ArgsType, bool)> NFunction;
 
 class Some {
 protected:
@@ -28,14 +28,15 @@ public:
     Some(Primitive* primitive, bool is_mutable);
     VarType type();
     Object* object();
-    Some* operator () (ArgumentsType args, bool $instantiation);
     Primitive* primitive();
     bool is_mutable();
+    Some* operator () (ArgsType args, bool $is_instantiation);
     void set(char* name, Some* some, bool is_mutable);
     void set(char* name, Object* object, bool is_mutable);
     void set(char* name, NFunction function, bool is_mutable);
     void set(char* name, Primitive* primitive, bool is_mutable);
     Some* get(char* name, bool check = false);
+    void del(char* name);
     char* raw();
     char* view();
     Some* some();
@@ -46,6 +47,8 @@ protected:
     char* m_name;
     char* m_alias;
     ObjType m_type;
+    Object* m_called;
+    Object* m_parent;
     NFunction m_function;
     Primitive* m_primitive;
     std::unordered_map<char*, Some*> m_props;
@@ -56,16 +59,22 @@ public:
     char* name();
     char* alias();
     ObjType type();
-    Some* operator () (ArgumentsType args, bool $instantiation);
-    Primitive* primitive();
-    void setType(ObjType type);
-    void setAlias(char* alias);
-    std::unordered_map<char*, Some*> props();
+    Object* called();
+    Object* parent();
+    void flushCalled();
+    void setCalled(Object* called); // be able to set a called
+    void setParent(Object* parent); // be able to set a parent
+    void setType(ObjType type); // be able to set object' type
+    void setAlias(char* alias); // be able to set object alias
+    Primitive* primitive(); // be able to get a tied primitive
+    std::unordered_map<char*, Some*> props(); // get obj props
+    Some* operator () (ArgsType args, bool $is_instantiation);
     void set(char* name, Some* some, bool is_mutable);
     void set(char* name, Object* object, bool is_mutable);
     void set(char* name, NFunction function, bool is_mutable);
     void set(char* nane, Primitive* primitive, bool is_mutable);
     Some* get(char* name, bool check = false);
+    void del(char* name);
     char* raw();
     char* view();
     Some* some();
