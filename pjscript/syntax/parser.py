@@ -174,10 +174,21 @@ class Parser:  # pylint: disable=too-few-public-methods  # it's okay to have onl
         params = [IdentifierLiteral(t[0])
                   for t in self._args_by(tokens[2:closing_bracket_index], lambda t: t.is_coma())]    # params
 
-        body = [self._parse_expression(raw)
-                for raw in self._expressions(tokens[closing_bracket_index + 2:len(tokens) - 1])]   # and body
+        expressions = self._expressions(tokens[closing_bracket_index + 2:len(tokens) - 1])   # fn expressions
 
-        return FunctionExpression(params, body)  # <----------------------- return parsed function expression
+        body = [self._parse_expression(raw) for raw in expressions[:-1]]   # <------- construct function body
+
+        # return;
+        #      ^
+        # return ...;
+        #      ^
+
+        if expressions[-1][0].is_return_keyword():
+            returns = (self._parse_expression(expressions[-1][1:]))  # <----- parse function return statement
+        else:
+            returns = None  # <--------------------------- if there is no return statement, set it to nullptr
+
+        return FunctionExpression(params, body, returns)  # <-------------- return parsed function expression
 
     def _parse_binary_expression(self, tokens: List[Token]) -> BinaryExpression:
 
@@ -234,14 +245,6 @@ class Parser:  # pylint: disable=too-few-public-methods  # it's okay to have onl
             if tokens[0].has_a_dot():  # <-- 'has_a_dot()' already checks that it's just a regular identifier
                 return MemberAccessExpression(IdentifierLiteral(tokens[0]))  # <- parse as a MemberAccessExpr
             return ScopedAccessExpression(IdentifierLiteral(tokens[0]))  # <----- parse as a ScopedAccessExpr
-
-        # return;
-        #      ^
-        # return ...;
-        #      ^
-
-        if tokens[0].is_return_keyword():
-            return ReturnExpression(self._parse_expression(tokens[1:]))  # <----- parse as a ReturnExpression
 
         # new Object;
         #   ^      ^
