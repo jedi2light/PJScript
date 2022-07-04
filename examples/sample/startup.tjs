@@ -4,9 +4,13 @@ xyz = "This gonna be treated as 'var xyz = ...' form";
 xyz;
 
 const mine = function () {
-    const msg = "Hello," + "World!";
+    const msg = "Hello, World";
+    // const msg = "Hello," + "World!";
+    // console.log('local msg variable =>', msg);
     return msg;
 };
+
+console.log(mine());
 
 var foo = Object();
 var foo = new Object;
