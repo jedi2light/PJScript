@@ -65,7 +65,7 @@ class FunctionExpression(BaseExpression):
                '_new->setAlias((char*)_->called()->alias());\n'
 
         if self._returns:
-            ret = f'return ({  self._returns.generate(emv = "_new")  })->some();'
+            ret = f'return ({  self._returns.generate(env = "_new")  })->some();'
         else:
             ret = 'return (new UndefinedPrimitive())-some();'    # default retval
 
