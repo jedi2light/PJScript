@@ -16,6 +16,12 @@ install: lint build
 runtime: runtime/cxx
 	cd runtime/cxx && mkdir -p build && cd build && cmake .. && make && cd -
 
+tests:
+	./test.sh examples/sample \
+		&& cat ./examples/sample/generated/pjs-vs-node.diff  # test 'sample'
+	./test.sh examples/simple \
+		&& cat ./examples/simple/generated/pjs-vs-node.diff  # test 'simple'
+
 build-upload-install: lint build
 	python -m twine upload --repository pypi --verbose ./dist/tjscript-*.whl
 	pip install --force-reinstall dist/tjscript-*.whl  # force reinstall pkg
