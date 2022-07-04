@@ -61,7 +61,8 @@ class FunctionExpression(BaseExpression):
         """Generate FunctionExpression"""
 
         body = 'Object* _new = new Object();\n' \
-               '_new->set((char*)"this", _new, false);\n'
+               '_new->set((char*)"this", _new, false);\n' \
+               '_new->setAlias((char*)_->called()->alias());\n'
 
         if self._returns:
             ret = f'return ({  self._returns.generate(emv = "_new")  })->some();'
