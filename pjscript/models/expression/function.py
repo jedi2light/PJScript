@@ -67,7 +67,7 @@ class FunctionExpression(BaseExpression):
         if self._returns:
             ret = f'return ({  self._returns.generate(env = "_new")  })->some();'
         else:
-            ret = 'return (new UndefinedPrimitive())-some();'    # default retval
+            ret = 'return (new UndefinedPrimitive())->some();'   # default retval
 
         for each in self.body():
             body += f'{each.generate(env="_new")};\n'  # <------ make expressions
