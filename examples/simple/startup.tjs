@@ -1,42 +1,42 @@
 // This example mostly invented to play with the built-in API
 
-console.log(Object());
-console.log(new Object());
-console.log(typeof(String));
-console.log(typeof(String()));
-console.log(typeof(new String()));
-console.log(typeof(String));
-console.log(typeof(String("foo")));
-console.log(typeof(new String("foo")));
-console.log(String);
-console.log(String("foo"));
-console.log(new String("foo"));
+console.log('{} is', Object());
+console.log('{} is', new Object());
+console.log('function is', typeof(String));
+console.log('string is', typeof(String()));
+console.log('object is', typeof(new String()));
+console.log('function is', typeof(String));
+console.log('string is', typeof(String("foo")));
+console.log('object is', typeof(new String("foo")));
+console.log('[Function: String] is', String);
+console.log('foo is', String("foo"));
+console.log('[String: foo] is', new String("foo"));
 
 var foo_str_instance = new String("foo");
 
-console.log(foo_str_instance.toString());
+console.log('foo is', foo_str_instance.toString());
 
 var ab = /* test lexer 'block comments' support */ undefined;
-console.log(ab);
-console.log(typeof(ab));
+console.log('undefined is', ab);
+console.log('undefined is', typeof(ab));
 
 const Foo = function () {
 	this.attribute = "42";
-	return "something";
+	return "something but not an object";
 };
 
 var hy = new Foo();
 
 console.log('This one is also a valid string literal, bro!');
 
-console.log(Foo);
-console.log(typeof(Foo));
-console.log(hy);
-console.log(typeof(hy));
-console.log(hy.attribute);
-console.log(Foo());
-console.log(typeof(Foo()));
-console.log(typeof(hy.attribute));
+console.log('[Function: Foo] is', Foo);
+console.log('function is', typeof(Foo));
+console.log('Foo: { attribute: 42 } is', hy);
+console.log('object is', typeof(hy));
+console.log('42 is', hy.attribute);
+console.log('something but not an object is', Foo());
+console.log('string is', typeof(Foo()));
+console.log('string is', typeof(hy.attribute));
 
 var my = String;
 
@@ -69,10 +69,9 @@ a.moo = new Object();
 a.foo = "42";
 a.bar = null;
 a.xyz = a; // we are smart enough to catch circular reference
-console.log(
-	"a is a type of a object? =>", typeof(a), ";",
-	"a.foo is a type of a string? =>", typeof(a.foo), ";",
-	"properties are displayed correctly? =>", a, ";",
-	"42 is displayed? =>", a.foo.toString(), ";",
-	"Object is a type of a function? =>", typeof(Object), "."
-);
+console.log("object is", typeof(a));
+console.log("string is", typeof(a.foo));
+console.log("{...}", a);
+console.log("42 is", a.foo.toString());
+console.log("function is", typeof(Object));
+// leave empty line at the end of this file to satisfy linter
