@@ -123,7 +123,12 @@ std::string object_to_string(Object* object) {
         return "{}";
     // first, start with the 'curly-brace' following by a 'white-space'
     std::string msg;
-    std::string str = "{ ";
+    std::string str;
+    if (object->alias()) {
+        str += object->alias(); // prepend object alias (if it has one)
+        str += " "; // separate starting curly-brace with a white-space
+    }
+    str += "{ ";
     int circularefcount = 0; // count 'circular referencing' properties
     for (auto it = props.begin(); it != props.end(); ++it) {
         str += std::move(it->first);
