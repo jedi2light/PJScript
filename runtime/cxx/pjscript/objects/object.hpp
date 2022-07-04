@@ -62,12 +62,12 @@ public:
     Object* called();
     Object* parent();
     void flushCalled();
-    void setCalled(Object* called); // be able to set a called
-    void setParent(Object* parent); // be able to set a parent
-    void setType(ObjType type); // be able to set object' type
-    void setAlias(char* alias); // be able to set object alias
-    Primitive* primitive(); // be able to get a tied primitive
-    std::unordered_map<char*, Some*> props(); // get obj props
+    void setCalled(Object* called); // be able to set called fun
+    void setParent(Object* parent); // be able to set obj parent
+    void setType(ObjType type); // be able to set an object type
+    void setAlias(char* alias); // be able to set object's alias
+    Primitive* primitive(); // be able to get the tied primitive
+    std::unordered_map<char*, Some*> props(); // get obj's props
     Some* operator () (ArgsType args, bool $is_instantiation);
     void set(char* name, Some* some, bool is_mutable);
     void set(char* name, Object* object, bool is_mutable);
