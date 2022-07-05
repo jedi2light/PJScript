@@ -17,10 +17,8 @@ runtime: runtime/cxx
 	cd runtime/cxx && mkdir -p build && cd build && cmake .. && make && cd -
 
 tests:
-	./test.sh examples/sample \
-		&& cat ./examples/sample/generated/pjs-vs-node.diff  # test 'sample'
-	./test.sh examples/simple \
-		&& cat ./examples/simple/generated/pjs-vs-node.diff  # test 'simple'
+	@./test.sh examples/sample  # <---- run comparison test against 'sample'
+	@./test.sh examples/simple  # <---- run comparison test against 'simple'
 
 build-upload-install: lint build
 	python -m twine upload --repository pypi --verbose ./dist/tjscript-*.whl
