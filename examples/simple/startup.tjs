@@ -40,29 +40,29 @@ console.log('string is', typeof(hy.attribute));
 
 var my = String;
 
-console.log(my);
+console.log('[Function: String] is', my);
 
-console.log(true);
-console.log(false);
-console.log(Boolean());
-console.log(Boolean(true));
-console.log(Boolean(false));
-console.log(new Boolean);
-console.log(new Boolean(true));
-console.log(new Boolean(false));
-console.log(typeof(true));
-console.log(typeof(false));
-console.log(typeof(Boolean));
-console.log(typeof(Boolean(true)));
-console.log(typeof(Boolean(false)));
-console.log(typeof(new Boolean()));
-console.log(typeof(new Boolean(true)));
-console.log(typeof(new Boolean(false)));
+console.log('true is', true);
+console.log('false is', false);
+console.log('false is', Boolean());
+console.log('true is', Boolean(true));
+console.log('false is', Boolean(false));
+console.log('[Boolean: false] is', new Boolean);
+console.log('[Boolean: true] is', new Boolean(true));
+console.log('[Boolean: false] is', new Boolean(false));
+console.log('boolean is', typeof(true));
+console.log('boolean is', typeof(false));
+console.log('function is', typeof(Boolean));
+console.log('boolean is', typeof(Boolean(true)));
+console.log('boolean is', typeof(Boolean(false)));
+console.log('object is', typeof(new Boolean()));
+console.log('object is', typeof(new Boolean(true)));
+console.log('object is', typeof(new Boolean(false)));
 
 var false_boolean = new Boolean();
-console.log(false_boolean.toString());
-console.log(typeof(false_boolean.toString));
-console.log(typeof(false_boolean.toString()));
+console.log('false is', false_boolean.toString());
+console.log('function is', typeof(false_boolean.toString));
+console.log('string is', typeof(false_boolean.toString()));
 
 var a = Object();
 a.moo = new Object();
