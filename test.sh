@@ -9,4 +9,6 @@ RESULT="${1}/generated/pjs-vs-node.diff"  # set path to a diff file
 
 diff <(./pjs.sh $1 | sed -e '1,3d' -e 's/ $//g') <(node $1/startup.tjs) > "${RESULT}"
 
+if [ -n "$(cat ${RESULT})" ]; then echo "$1: different output, see: '${RESULT}'"; fi
+
 if [ "${KOMPARE}" == "1" ]; then kompare ${RESULT}; fi # optionally view with Kompare
