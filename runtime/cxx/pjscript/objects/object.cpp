@@ -239,19 +239,21 @@ std::unordered_map<char*, Some*> Object::props() {
 
 Some* Object::operator() (ArgsType args, bool $is_instantiation) {
     this->m_parent->setCalled(this); // set a function just called
-    Some* retval = this->m_function(args, $is_instantiation);
+    Some* retval = this->m_function(args=args, $is_instantiation);
     this->m_parent->flushCalled(); // flush called() function slot
     return retval; // return a called function retruned value back
 }
 
-void groom_object(Object* object, ObjType type, char* name) {
+void groom_object(
+        Object* object, ObjType type, char* name, Object* parent) {
     object->setType(type);
     object->setAlias(name);
+    object->setParent(parent);
 }
 
 void Object::set(char* name, Object* object, bool is_mutable) {
     if (object) {
-        groom_object(object, CASUAL_OBJ, name);
+        groom_object(object, CASUAL_OBJ, name, this);   // grooming
         this->m_props.insert({name, new Some(object, is_mutable)});
     }
 }
@@ -259,8 +261,7 @@ void Object::set(char* name, Object* object, bool is_mutable) {
 void Object::set(char* name, NFunction function, bool is_mutable) {
     if (function) {
         Object* object = new Object(function);
-        object->setParent(this); // set parent (only for functions)
-        groom_object(object, CALLABLE_OBJ, name);
+        groom_object(object, CALLABLE_OBJ, name, this); // grooming
         this->m_props.insert({name, new Some(object, is_mutable)});
     }
 }
